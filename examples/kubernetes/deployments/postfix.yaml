@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postfix
+  namespace: mailserver
+spec:
+  selector:
+    matchLabels:
+      app: mailserver
+      tier: postfix
+  template:
+    metadata:
+      labels:
+        app: mailserver
+        tier: postfix
+        logType: postfix
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: mailserver/environment
+                operator: In
+                values:
+                - mailserver
+      containers:
+      - name: postfix
+        image: technicalguru/mailserver-postfix
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PF_DB_HOST
+          value: "mariadb"
+        - name: PF_DB_NAME
+          value: "mail"
+        - name: PF_DB_USER
+          value: "postfix"
+        - name: PF_DB_PASS
+          value: "<my-mariadb-postfix-password>"
+        - name: PF_SETUP_PASS
+          value: "<my-mariadb-root-password>"
+        - name: PF_MYDOMAIN
+          value: "<my-default-mail-domain>"
+        - name: PF_MYHOSTNAME
+          value: "<my-mailserver-name-used-by-postfix-helo>"
+        - name: PF_MYORIGIN
+          value: "<my-default-mail-domain>"
+        - name: PF_AMAVIS_SERVICE_NAME
+          # value is complete DNS name: "<service-name>.<namespace-name>.svc.cluster.local"
+          value: "amavis.mailserver.svc.cluster.local"
+        - name: PF_AMAVIS_SERVICE_PORT
+          value: "10024"
+        - name: PF_TLS_CERT_FILE
+          value: "/var/certificate/tls.crt"
+        - name: PF_TLS_KEY_FILE
+          value: "/var/certificate/tls.key"
+        - name: PF_TLS_CAFILE
+          value: "/var/certificate/tls.chain"
+        - name: PF_TLS_CAPATH
+          value: "/etc/ssl/certs"
+        ports:
+        - containerPort: 25
+          name: smtp
+        - containerPort: 143
+          name: imap
+        - containerPort: 587
+          name: smtps
+        - containerPort: 993
+          name: imaps
+        - containerPort: 10025
+          name: checked
+        volumeMounts:
+        - name: mailboxes
+          mountPath: /var/vmail
+        - name: certificate
+          mountPath: /var/certificate
+      volumes:
+      - name: mailboxes
+        hostPath:
+          path: /var/mailserver/mailboxes
+      - name: certificate
+        secret:
+          secretName: tls-certificate
+

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postfix-internal
+  namespace: mailserver
+spec:
+  selector:
+    app: mailserver
+    tier: postfix
+  ports:
+  - port: 25
+    name: smtp
+    targetPort: smtp
+  - port: 143
+    name: imap
+    targetPort: imap
+  - port: 587
+    name: smtps
+    targetPort: smtps
+  - port: 993
+    name: imaps
+    targetPort: imaps
+  - port: 10025
+    name: checked
+    targetPort: checked

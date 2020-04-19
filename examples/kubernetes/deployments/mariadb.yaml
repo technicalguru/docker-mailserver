@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: mailserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailserver
+      tier: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mailserver
+        tier: database
+        logType: mariadb
+    spec:
+      containers:
+      - image: mariadb:10.4.10
+        name: mariadb
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "<my-mariadb-root-password>"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mailserver-data
+        - name: configuration
+          mountPath: /etc/mysql/conf.d/mariadb-auth.cnf
+          subPath: mariadb-auth.cnf
+        - name: configuration
+          mountPath: /etc/mysql/conf.d/mariadb-sizing.cnf
+          subPath: mariadb-sizing.cnf
+        - name: configuration
+          mountPath: /etc/mysql/conf.d/mariadb-audit-log.cnf
+          subPath: mariadb-audit-log.cnf
+      volumes:
+      - name: mailserver-data
+        hostPath:
+          path: /var/mailserver/mariadb
+      - name: configuration
+        configMap:
+          name: mariadb

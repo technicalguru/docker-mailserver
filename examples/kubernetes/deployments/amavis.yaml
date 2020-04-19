@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amavis
+  namespace: mailserver
+spec:
+  selector:
+    matchLabels:
+      app: mailserver
+      tier: amavis
+  template:
+    metadata:
+      labels:
+        app: mailserver
+        tier: amavis
+        logType: amavis
+    spec:
+      containers:
+      - name: amavis
+        image: technicalguru/mailserver-amavis
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: AV_MYDOMAIN
+          value: "<my-mailserver-name-used-by-postfix-helo>"
+        - name: AV_POSTFIX_SERVICE_NAME
+          value: "postfix-internal"
+        - name: AV_POSTFIX_SERVICE_PORT
+          value: "10025"
+        - name: AV_VIRUSADMIN_EMAIL
+          value: "<my-postmaster-email-address>"
+        ports:
+        - containerPort: 10024
+          name: amavis
+        volumeMounts:
+        - name: virusmails
+          mountPath: /var/virusmails
+      volumes:
+      - name: virusmails
+        hostPath:
+          path: /var/mailserver/virusmails 
+    

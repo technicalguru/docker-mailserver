@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roundcube
+  namespace: mailserver
+spec:
+  selector:
+    matchLabels:
+      app: mailserver
+      tier: roundcube
+  template:
+    metadata:
+      labels:
+        app: mailserver
+        tier: roundcube
+        logType: apache
+    spec:
+      containers:
+      - name: roundcube
+        image: technicalguru/mailserver-roundcube
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: RC_DB_HOST
+          value: "mariadb"
+        - name: RC_DB_NAME
+          value: "roundcube"
+        - name: RC_DB_USER
+          value: "roundcube"
+        - name: RC_DB_PASS
+          value: "<my-mariadb-roundcube-password>"
+        - name: RC_DES_KEY
+          value: "<a-24-character-random-string>"
+        - name: RC_IMAP_SERVER_NAME
+          value: "postfix"
+        - name: RC_SMTP_SERVER_NAME
+          value: "postfix"
+        - name: RC_DEFAULT_DOMAIN
+          value: "<my-default-domain>"
+        ports:
+        - containerPort: 80
+          name: http
+    
