@@ -1,7 +1,7 @@
 # docker-mailserver
 This is a project that aims at putting a mailserver into Docker containers. The obvious reason is 
 that a good mailserver setup requires time and effort. And even when you have it installed on 
-one server, you will need it to migrate ot sooner or later to another server or upgrade 
+one server, you will need to migrate it sooner or later to another server or upgrade 
 components of it. Why not locking the whole mailserver into a defined setup that can be moved easily
 from one server to the next or from one Kubernetes cluster to the other.
 
@@ -10,7 +10,7 @@ configuration scripts.
 
 # Features
 * A complete SMTP mailserver using TLS, DKIM, SPF and other modern capabilities
-* Administrating domains and mailboxes on this server via Web UI
+* Administrating domains and mailboxes via a Web UI
 * Scanning incoming and outgoing e-mails for viruses and spam
 * Reading and writing e-mails from anywhere in the world using a Web UI
 * Maintaining all meta information in a database instead of files
@@ -43,10 +43,13 @@ A complete mailserver is the coordinated setup of multiple components. Various d
 The following sections will help you to setup your own mailserver using different infrastructures.
 
 ## Setup the mailserver with docker-compose
+Please refer to the special [docker-compose](examples/docker-compose) section.
 
 ## Setup the mailserver with plain Kubernetes YAML files
+Please refer to the special [Kubernetes](examples/kubernetes) section.
 
-## Setup the mailserver with HELM charts
+## Setup the mailserver with HELM charts on a Kubernetes cluster
+Please refer to the special [HELM](examples/helm-charts) section.
 
 # Security Considerations
 
