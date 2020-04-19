@@ -12,11 +12,12 @@ kubectl apply -f <yaml-file>
 
 Several assumptions are made for this example. Please make sure you fulfill them. Otherwise you need to adjust the
 YAML files and commands accordingly.
-* You have a running Kubernetes cluster and that you are familiar with Kubernetes `kubectl` command
+* You have a running Kubernetes cluster and you are familiar with Kubernetes `kubectl` command
 and YAML files.
 * The mailserver will run in namespace `mailserver`. The namespace is setup already.
 * It is also assumed that you have an Ingress configured in your cluster that points to these services:
     * `https://<your-web-domain-name>/postfixadmin` => `http://postfixadmin.mailserver.svc.cluster.local`
+    * `https://<your-web-domain-name>/roundcube` => `http://roundcube.mailserver.svc.cluster.local`
     * It terminates the SSL/TLS encryption and all traffic within your cluster in not encrypted.
     * The SSL certificate is available to you with private key, certificate and certificate chain. 
 * All persistent data will be stored on host volumes. Usually you want to change this in the YAML files. The 
