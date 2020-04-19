@@ -18,7 +18,7 @@ and YAML files.
 * It is also assumed that you have an Ingress configured in your cluster that points to these services:
     * `https://<your-web-domain-name>/postfixadmin` => `http://postfixadmin.mailserver.svc.cluster.local`
     * `https://<your-web-domain-name>/roundcube` => `http://roundcube.mailserver.svc.cluster.local`
-    * It terminates the SSL/TLS encryption and all traffic within your cluster in not encrypted.
+    * It terminates the SSL/TLS encryption and all traffic within your cluster is not encrypted.
     * The SSL certificate is available to you with private key, certificate and certificate chain. 
 * All persistent data will be stored on host volumes. Usually you want to change this in the YAML files. The 
   examples are kept simple for this purpose. Especially the postfix, amavis and mariadb containers require
@@ -52,7 +52,7 @@ If the service definition is ok for you then apply it:
 kubectl apply -f services/mariadb.yaml
 ```
 
-Check the `deployments/mariadb`file. Adjust the password (root) and the host volume
+Check the `deployments/mariadb.yaml` file. Adjust the password (root) and the host volume
 definition if required. Also notice that you will need to stick the Pod to a specific
 node in your cluster in case you use the example of a host volume. See the Postfix setup
 for an example.
@@ -203,6 +203,8 @@ kubectl get pods -n mailserver
 
 You need to execute some further first-time installation steps. Follow the instructions as given in
 [mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) documentation.
+
+# Congratulations!
 
 The setup of the mailserver is complete now. Feel free to give feedback or report bugs and change requests
 at the individual components' issue trackers or at this main [Issue Tracker](https://github.com/technicalguru/docker-mailserver/issues).
