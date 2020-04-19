@@ -53,8 +53,23 @@ Please refer to the special [HELM](examples/helm-charts) section.
 
 # Security Considerations
 
+* It is crucial that you do not expose port 10025 of the [mailserver-postfix](https://hub.docker.com/technicalguru/mailserver-postfix)
+  container. It can be misused as a SPAM relay as it does not restrict senders that deliver mail to it. This port is intended for
+  internal purposes only. The same is valid for the port 10024 of the [mailserver-amavis](https://hub.docker.com/technicalguru/mailserver-amavis)
+  container.
+* Postfix's main ports can be protected by TLS. Please make use of this as it increases security of your setup. In fact,
+  the Postfix setup was never tested thoroughly without TLS so it is possible it will not work properly - especially when
+  passwords are required.
+* PostfixAdmin and Roundcube are Web User Interfaces that are exposed as HTTP only. An attacker could easily copy your network
+  traffic and read your passwords. Make sure you have an appropriate Ingress Controller or Reverse Proxy in front and your traffic
+  is routed internally on your host only. 
+* If your internal network traffix in a Kubernetes cluster is crossing node borders, you will need to ensure that it is encrypted.
+  The default setup of these containers do not configure this. However, you can use Istio, Consul or linkerd in order to achieve
+  this goal.
+
 # Issues
-I use this composition of Docker images in a Kubernetes cluster to run my own mailserver productively. Minor issues exist at the moment (see sub-projects). But it runs stable :).
+I use this composition of Docker images in a Kubernetes cluster to run my own mailserver productively. Minor issues exist at the moment (see sub-projects). 
+But it runs stable and you can be ensured I release image fixes as soon as I detect any bugs or security flaws. :).
 
 # Contribution
 Report a bug, request an enhancement or pull request at the [GitHub Issue Tracker](https://github.com/technicalguru/docker-mailserver/issues).
