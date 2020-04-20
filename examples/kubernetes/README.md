@@ -214,6 +214,14 @@ Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your
 You need to execute some further first-time installation steps. Follow the instructions as given in
 [mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) documentation.
 
+# Testing your Mailserver
+
+Here are some useful links that help you to test whether your new Mailserver works as intended and no security flaws are introduced:
+
+* [**Relay Test**](http://www.aupads.org/test-relay.html) - checks whether your mailserver can be misused as an open mail gateway (relay)
+* [**TLS Test**](https://www.checktls.com/) - checks whether your TLS configuration is complete and works as intended
+* [**SMTP Test**](https://mxtoolbox.com/diagnostic.aspx) - A general mailserver diagnostic tool
+
 # Congratulations!
 
 The setup of the mailserver is complete now. Feel free to give feedback or report bugs and change requests
