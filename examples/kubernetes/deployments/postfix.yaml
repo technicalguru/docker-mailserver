@@ -58,6 +58,8 @@ spec:
           value: "/var/certificate/tls.chain"
         - name: PF_TLS_CAPATH
           value: "/etc/ssl/certs"
+        - name: PF_TLS_ADMIN_EMAIL
+          value: "postmaster@<my-default-mail-domain>"
         ports:
         - containerPort: 25
           name: smtp
