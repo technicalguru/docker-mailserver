@@ -67,6 +67,8 @@ Check that your MariaDB pod is up and running:
 kubectl get pods -n mailserver
 ```
 
+Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
+
 ## Setup Postfix
 
 Check the `secrets/tls-certificate.yaml` file. It requires you to add the contents
@@ -113,6 +115,8 @@ Check that your Postfix pod is up and running:
 kubectl get pods -n mailserver
 ```
 
+Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
+
 ## Setup Amavis Virus and Spam Checker
 
 Check the `services/amavis.yaml` file. If the service definition fits
@@ -137,6 +141,8 @@ Check that your Amavis pod is up and running:
 ```
 kubectl get pods -n mailserver
 ```
+
+Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
 
 Although your mailserver is up and running, it cannot accept mails yet as there are no domains and
 mailboxes defined in your database. You will need the PostfixAdmin first.
@@ -164,6 +170,8 @@ Check that your PostfixAdmin pod is up and running:
 ```
 kubectl get pods -n mailserver
 ```
+
+Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
 
 Now, everything is complete to actually create your domains and mailboxes. Follow the instructions as given in
 [mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) documentation.
@@ -201,8 +209,18 @@ Check that your Roundcube pod is up and running:
 kubectl get pods -n mailserver
 ```
 
+Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
+
 You need to execute some further first-time installation steps. Follow the instructions as given in
 [mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) documentation.
+
+# Testing your Mailserver
+
+Here are some useful links that help you to test whether your new Mailserver works as intended and no security flaws are introduced:
+
+* [**Relay Test**](http://www.aupads.org/test-relay.html) - checks whether your mailserver can be misused as an open mail gateway (relay)
+* [**TLS Test**](https://www.checktls.com/) - checks whether your TLS configuration is complete and works as intended
+* [**SMTP Test**](https://mxtoolbox.com/diagnostic.aspx) - A general mailserver diagnostic tool
 
 # Congratulations!
 

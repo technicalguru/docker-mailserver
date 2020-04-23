@@ -58,26 +58,37 @@ spec:
           value: "/var/certificate/tls.chain"
         - name: PF_TLS_CAPATH
           value: "/etc/ssl/certs"
+        - name: PF_TLS_ADMIN_EMAIL
+          value: "postmaster@<my-default-mail-domain>"
         ports:
         - containerPort: 25
           name: smtp
+        - containerPort: 110
+          name: pop3
         - containerPort: 143
           name: imap
         - containerPort: 587
-          name: smtps
+          name: submission
         - containerPort: 993
           name: imaps
+        - containerPort: 995
+          name: pop3s
         - containerPort: 10025
           name: checked
         volumeMounts:
         - name: mailboxes
           mountPath: /var/vmail
+        - name: spool
+          mountPath: /var/spool/postfix
         - name: certificate
           mountPath: /var/certificate
       volumes:
       - name: mailboxes
         hostPath:
           path: /var/mailserver/mailboxes
+      - name: spool
+        hostPath:
+          path: /var/mailserver/spool
       - name: certificate
         secret:
           secretName: tls-certificate

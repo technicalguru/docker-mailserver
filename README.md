@@ -12,6 +12,8 @@ configuration scripts.
 * A complete SMTP mailserver using TLS, DKIM, SPF and other modern capabilities
 * Administrating domains and mailboxes via a Web UI
 * Scanning incoming and outgoing e-mails for viruses and spam
+* Moves spam into Spam folder of your mailbox automatically (when spam recognition is on)
+* User-specific sieve rules enabled
 * Reading and writing e-mails from anywhere in the world using a Web UI
 * Maintaining all meta information in a database instead of files
 
@@ -72,5 +74,6 @@ I use this composition of Docker images in a Kubernetes cluster to run my own ma
 But it runs stable and you can be ensured I release image fixes as soon as I detect any bugs or security flaws. :).
 
 # Contribution
-Report a bug, request an enhancement or pull request at the [GitHub Issue Tracker](https://github.com/technicalguru/docker-mailserver/issues).
+Report a bug, request an enhancement or pull request at the [GitHub Issue Tracker](https://github.com/technicalguru/docker-mailserver/issues). Make sure you have checked out the [Contribution Guideline](CONTRIBUTING.md)
+
 
