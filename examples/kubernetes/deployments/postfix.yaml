@@ -58,15 +58,20 @@ spec:
           value: "/var/certificate/tls.chain"
         - name: PF_TLS_CAPATH
           value: "/etc/ssl/certs"
+          value: "/etc/ssl/certs"
         ports:
         - containerPort: 25
           name: smtp
+        - containerPort: 110
+          name: pop3
         - containerPort: 143
           name: imap
         - containerPort: 587
-          name: smtps
+          name: submission
         - containerPort: 993
           name: imaps
+        - containerPort: 995
+          name: pop3s
         - containerPort: 10025
           name: checked
         volumeMounts:

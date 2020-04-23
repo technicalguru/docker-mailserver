@@ -11,15 +11,21 @@ spec:
   - port: 25
     name: smtp
     targetPort: smtp
+  - port: 110
+    name: pop3
+    targetPort: pop3
   - port: 143
     name: imap
     targetPort: imap
   - port: 587
-    name: smtps
-    targetPort: smtps
+    name: submission
+    targetPort: submission
   - port: 993
     name: imaps
     targetPort: imaps
+  - port: 995
+    name: pop3s
+    targetPort: pop3s
   - port: 10025
     name: checked
     targetPort: checked
