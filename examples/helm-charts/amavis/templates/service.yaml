@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "amavis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "amavis.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: amavis
+      port: {{ .Values.service.port }}
+      targetPort: amavis
+      protocol: TCP
+  selector:
+    {{- include "amavis.selectorLabels" . | nindent 4 }}
