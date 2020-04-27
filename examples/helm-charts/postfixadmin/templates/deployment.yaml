@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "postfixadmin.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "postfixadmin.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "postfixadmin.selectorLabels" . | nindent 8 }}
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: mailserver/environment
+                operator: In
+                values:
+                - {{ .Values.environment }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: PFA_DB_HOST
+          value: "{{ include "postfixadmin.dbHostname" . }}"
+        - name: PFA_DB_NAME
+          value: "{{ .Values.dbName }}"
+        - name: PFA_DB_USER
+          value: "{{ .Values.dbUser }}"
+        - name: PFA_DB_PASS
+          value: "{{ .Values.dbPassword }}"
+        - name: PFA_SETUP_PASS
+          value: "{{ .Values.dbSetupPassword }}"
+        - name: PFA_POSTFIX_SERVER
+          value: "{{ include "postfixadmin.mailserverHostname" . }}"
+        - name: PFA_POSTFIX_PORT
+          value: "{{ .Values.mailserverPort }}"
+        - name: PFA_ABUSE_EMAIL
+          value: "{{ .Values.abuseEmail }}"
+        - name: PFA_HOSTMASTER_EMAIL
+          value: "{{ .Values.hostmasterEmail }}"
+        - name: PFA_POSTMASTER_EMAIL
+          value: "{{ .Values.postmasterEmail }}"
+        - name: PFA_WEBMASTER_EMAIL
+          value: "{{ .Values.webmasterEmail }}"
+        ports:
+        - name: http
+          containerPort: 80
+      resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+

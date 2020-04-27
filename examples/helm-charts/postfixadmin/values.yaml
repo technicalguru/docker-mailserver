@@ -1,0 +1,59 @@
+# Default values for postfixadmin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# $replicaCount - the number of replicas in the deployment to create
+replicaCount: 1
+
+# $image            - definition of docker image
+# $image.repository - the image name (without tag)
+# $image.pullPolicy - The pull policy for the image
+image:
+  repository: technicalguru/mailserver-postfixadmin
+  pullPolicy: IfNotPresent
+  nameOverride: ""
+  fullnameOverride: ""
+
+#####################
+# Service settings
+#####################
+# $service.port - Webserver port to bind the service to
+service:
+  port: 80
+
+# $resources - additional resource requirements
+resources: {}
+
+# $environment - the node label the pod is running on (dev, uat, prod)
+environment: "dev"
+
+#####################
+# Database settings
+#####################
+# $dbHostname - the database host
+# $dbName     - the database instance name
+# $dbUser     - the database user to use
+# $dbPassword - the password of the database user to use
+# $dbSetupPassword - the root password for setup
+dbHostname: "mariadb"
+dbName: "mail"
+dbUser: "postfix"
+dbPassword: "postfix"
+dbSetupPassword: "password"
+
+
+########################
+# PostfixAdmin settings
+########################
+# $mailserverHostname - hostname to be used for HELO greeting
+# $mailserverPort     - relay port for Amavis mail scanning
+# $abuseEmail         - e-mail of abuse admin
+# $hostmasterEmail    - e-mail of host responsible
+# $postmasterEmail    - e-mail of mail responsible
+# $webmasterEmail     - e-mail of web responsible
+mailserverHostname: "postfix"
+mailserverPort: ""
+abuseEmail: "abuse@localhost"
+hostmasterEmail: "hostmaster@localhost"
+postmasterEmail: "postmaster@localhost"
+webmasterEmail: "webmaster@localhost"
