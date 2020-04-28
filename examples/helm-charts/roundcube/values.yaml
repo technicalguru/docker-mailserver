@@ -42,7 +42,7 @@ dbPassword: "roundcube"
 ########################
 # $imapServerHostname - hostname to be used for HELO greeting
 # $smtpServerHostname - hostname to be used for HELO greeting
-# $defaultDomain      - relay port for Amavis mail scanning
+# $defaultDomain      - The default domain for login users
 # $desKey             - a unique 24-char string for your server
 imapServerHostname: "postfix"
 smtpServerHostname: "postfix"

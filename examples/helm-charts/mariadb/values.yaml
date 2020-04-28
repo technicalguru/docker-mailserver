@@ -17,7 +17,7 @@ fullnameOverride: ""
 
 # $service      - description of the service object
 # $service.type - the service type (ClusterIP, NodePort, LoadBalancer)
-# $service.type - the port number to expose by the service
+# $service.port - the port number to expose by the service
 service:
   type: ClusterIP
   port: 3306
@@ -39,10 +39,12 @@ resources: {}
 rootPassword: "root-password"
 
 # Some config values for optimizing memory behaviour
+# $bufferPoolSize   - the buffer pool size for InnoDB
+# $maxAllowedPacket - The maximum size of a packet
 bufferPoolSize: "1024M"
 maxAllowedPacket: "64M"
 
-# How is the data volume being connected (hostPath, pvc)
+# $volumeType - How is the data volume being connected (hostPath, pvc)
 volumeType: "hostPath"
 
 # $environment - the context the pods are running in (dev, uat, prod)
@@ -52,4 +54,4 @@ environment: "dev"
 enableAuditLog: true
 # $auditFilePath  - where to store the audit file (default is the data directory in order to persist automatically)
 auditFilePath: "/var/lib/mysql/server_audit.log"
- 
+
