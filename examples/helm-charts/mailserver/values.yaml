@@ -1,0 +1,145 @@
+# Default values for a mailserver.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#####################################################
+# General settings valid for all pods
+#####################################################
+# $environment     - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
+# $imagePullPolicy - The image pull policy used in the pods
+environment: &default_environment "production"
+imagePullPolicy: &default_pull_policy "IfNotPresent"
+
+# $mariadb.environment      - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
+# $mariadb.image            - definition of docker image
+# $mariadb.image.repository - the image name (without tag)
+# $mariadb.image.pullPolicy - The pull policy for the image
+# $mariadb.service          - description of the service object
+# $mariadb.service.type     - the service type (ClusterIP, NodePort, LoadBalancer)
+# $mariadb.service.port     - the port number to expose by the service
+# $mariadb.rootPassword     - the password for the root account when initially settig up the DB. ATTENTION! You shall change the password manually after the DB is set up
+# $mariadb.bufferPoolSize   - the buffer pool size for InnoDB
+# $mariadb.maxAllowedPacket - The maximum size of a packet
+# $mariadb.volumeType       - How is the data volume being connected (hostPath, pvc)
+# $mariadb.enableAuditLog   - enables the mariadb audit plugin
+# $mariadb.auditFilePath    - where to store the audit file (default is the data directory in order to persist automatically)
+mariadb:
+  environment: *default_environment
+  rootPassword: "my-db-root-password"
+  image:
+    pullPolicy: *default_pull_policy
+
+# $postfix.environment             - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
+# $postfix.image                   - definition of docker image
+# $postfix.image.repository        - the image name (without tag)
+# $postfix.image.pullPolicy        - The pull policy for the image
+# $postfix.replicaCount            - the number of replicas in the deployment to create
+# $postfix.service.externalIP      - the bind address of your node where services shall listen
+# $postfix.service.smtpPort        - SMTP Port
+# $postfix.service.pop3Port        - POP3 Port
+# $postfix.service.imapPort        - IMAP Port
+# $postfix.service.submissionPort  - Submission Port
+# $postfix.service.imapsPort       - IMAPS Port
+# $postfix.service.pop3sPort       - POP3S Port
+# $postfix.service.relayPort       - Relay port for incoming mail scan results (from amavis)
+# $postfix.resources               - additional resource requirements
+# $postfix.dbHostname              - the database host
+# $postfix.dbName                  - the database instance name
+# $postfix.dbUser                  - the database user to use
+# $postfix.dbPassword              - the password of the database user to use
+# $postfix.dbSetupPassword         - the root password for setup
+# $postfix.defaultDomain           - default mail domain
+# $postfix.serverName              - hostname to be used for HELO greeting
+# $postfix.origin                  - default origin of mails, usually default mail domain
+# $postfix.amavisHostname          - name of host for Amavis mail scanning (optional)
+# $postfix.amavisPort              - relay port for Amavis mail scanning
+# $postfix.tlsCertificatePath      - directory where TLS certificate files are stored in the pod
+# $postfix.tlsCertificateChainFile - The path to your TLS certificate chain file (chain.pem)
+# $postfix.tlsCertificateFile:     - The path to your TLS certificate (cert.pem)
+# $postfix.tlsKeyFile              - The path to your TLS key (privkey.pem)
+# $postfix.tlsCAPath               - directory where trusted CA certificates are stored
+# $postfix.tlsAdminEmail           - e-mail of admin to be informed when TLS certificate is about to expire
+postfix:
+  environment: *default_environment
+  image:
+    pullPolicy: *default_pull_policy
+  service:
+    externalIP: "your-external-ip"
+  dbPassword: "my-db-postfix-password"
+  dbSetupPassword: "my-db-root-password"
+  defaultDomain: "my-domain.tld"
+  serverName: "my-mailserver"
+  origin: "my-domain.tld"
+  tlsAdminEmail: "tls-admin@my-domain.tld"
+  tlsCertificateChainFile: "path-to-chain.pem"
+  tlsCertificateFile: "path-to-cert.pem"
+  tlsKeyFile: "path-to-privkey.pem"
+
+# $amavis.environment      - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
+# $amavis.image            - definition of docker image
+# $amavis.image.repository - the image name (without tag)
+# $amavis.image.pullPolicy - The pull policy for the image
+# $amavis.replicaCount     - the number of replicas in the deployment to create
+# $amavis.service.port     - the incoming service port
+# $amavis.resources        - additional resource requirements
+# $amavis.defaultDomain    - default mail domain
+# $amavis.relayHostname    - name of host for Amavis mail scanning (optional)
+# $amavis.relayPort        - relay port for Amavis mail scanning
+# $amavis.virusAdminEmail  - e-mail of admin to be informed when viruses were quarantined
+amavis:
+  environment: *default_environment
+  image:
+    pullPolicy: *default_pull_policy
+  defaultDomain: "my-domain.tld"
+  virusAdminEmail: "virus-admin@my-domain.tld"
+
+
+# $postfixadmin.image              - definition of docker image
+# $postfixadmin.image.repository   - the image name (without tag)
+# $postfixadmin.image.pullPolicy   - The pull policy for the image
+# $postfixadmin.replicaCount       - the number of replicas in the deployment to create
+# $postfixadmin.service.port       - Webserver port to bind the service to
+# $postfixadmin.resources          - additional resource requirements
+# $postfixadmin.dbHostname         - the database host
+# $postfixadmin.dbName             - the database instance name
+# $postfixadmin.dbUser             - the database user to use
+# $postfixadmin.dbPassword         - the password of the database user to use
+# $postfixadmin.dbSetupPassword    - the root password for setup
+# $postfixadmin.mailserverHostname - hostname to be used for HELO greeting
+# $postfixadmin.mailserverPort     - relay port for Amavis mail scanning
+# $postfixadmin.abuseEmail         - e-mail of abuse admin
+# $postfixadmin.hostmasterEmail    - e-mail of host responsible
+# $postfixadmin.postmasterEmail    - e-mail of mail responsible
+# $postfixadmin.webmasterEmail     - e-mail of web responsible
+postfixadmin:
+  image:
+    pullPolicy: *default_pull_policy
+  dbPassword: "my-db-postfix-password"
+  dbSetupPassword: "my-db-root-password"
+  abuseEmail: "abuse@my-domain.tld"
+  hostmasterEmail: "hostmaster@my-domain.tld"
+  postmasterEmail: "postmaster@my-domain.tld"
+  webmasterEmail: "webmaster@my-domain.tld"
+
+
+# $roundcube.image              - definition of docker image
+# $roundcube.image.repository   - the image name (without tag)
+# $roundcube.image.pullPolicy   - The pull policy for the image
+# $roundcube.replicaCount       - the number of replicas in the deployment to create
+# $roundcube.service.port       - Webserver port to bind the service to
+# $roundcube.resources          - additional resource requirements
+# $roundcube.dbHostname         - the database host
+# $roundcube.dbName             - the database instance name
+# $roundcube.dbUser             - the database user to use
+# $roundcube.dbPassword         - the password of the database user to use
+# $roundcube.imapServerHostname - hostname to be used for HELO greeting
+# $roundcube.smtpServerHostname - hostname to be used for HELO greeting
+# $roundcube.defaultDomain      - The default domain for login users
+# $roundcube.desKey             - a unique 24-char string for your server (required, must not be empty)
+roundcube:
+  image:
+    pullPolicy: *default_pull_policy
+  dbPassword: "my-db-roundcube-password"
+  defaultDomain: "my-domain.tld"
+  desKey: ""
+

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "roundcube.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "roundcube.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "roundcube.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: RC_DB_HOST
+          value: "{{ include "roundcube.dbHostname" . }}"
+        - name: RC_DB_NAME
+          value: "{{ .Values.dbName }}"
+        - name: RC_DB_USER
+          value: "{{ .Values.dbUser }}"
+        - name: RC_DB_PASS
+          value: "{{ .Values.dbPassword }}"
+        - name: RC_DES_KEY
+          value: "{{ .Values.desKey }}"
+        - name: RC_IMAP_SERVER_NAME
+          value: "{{ include "roundcube.imapServerHostname" . }}"
+        - name: RC_SMTP_SERVER_NAME
+          value: "{{ include "roundcube.smtpServerHostname" . }}"
+        - name: RC_DEFAULT_DOMAIN
+          value: "{{ .Values.defaultDomain }}"
+        ports:
+        - name: http
+          containerPort: 80
+      resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+

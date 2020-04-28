@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mariadb.fullname" . }}-configuration
+  namespace: {{ .Release.Namespace }}
+data:
+  {{ include "mariadb.fullname" .}}-auth.cnf: |-
+    [mysqld]
+    default_authentication_plugin=mysql_native_password
+  {{ include "mariadb.fullname" .}}-sizing.cnf: |-
+    [mysqld]
+    innodb_buffer_pool_size={{ .Values.bufferPoolSize }}
+    max_allowed_packet={{ .Values.maxAllowedPacket }}
+    sql_mode=""
+  {{- if .Values.enableAuditLog }}
+  {{ include "mariadb.fullname" .}}-audit-log.cnf: |-
+    [mariadb]
+    plugin_load_add = server_audit
+    server_audit_events = CONNECT,QUERY,TABLE
+    server_audit_logging = ON
+    server_audit_file_path = {{ .Values.auditFilePath }}
+  {{- end }}

@@ -1,0 +1,40 @@
+# Default values for amavis.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# $replicaCount - the number of replicas in the deployment to create
+replicaCount: 1
+
+# $image            - definition of docker image
+# $image.repository - the image name (without tag)
+# $image.pullPolicy - The pull policy for the image
+image:
+  repository: technicalguru/mailserver-amavis
+  pullPolicy: IfNotPresent
+  nameOverride: ""
+  fullnameOverride: ""
+
+#####################
+# Service settings
+#####################
+# $service.port - the incoming service port
+service:
+  port: 10024
+
+# $resources - additional resource requirements
+resources: {}
+
+# $environment - the node label the pod is running on (dev, uat, prod)
+environment: "dev"
+
+#####################
+# Mail settings
+#####################
+# $defaultDomain     - default mail domain
+# $relayHostname     - name of host for Amavis mail scanning (optional)
+# $relayPort         - relay port for Amavis mail scanning
+# $virusAdminEmail   - e-mail of admin to be informed when viruses were quarantined
+defaultDomain: ""
+relayHostname: "postfix-internal"
+relayPort: ""
+virusAdminEmail: ""

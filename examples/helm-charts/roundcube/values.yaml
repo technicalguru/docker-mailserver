@@ -1,0 +1,50 @@
+# Default values for roundcube.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# $replicaCount - the number of replicas in the deployment to create
+replicaCount: 1
+
+# $image            - definition of docker image
+# $image.repository - the image name (without tag)
+# $image.pullPolicy - The pull policy for the image
+image:
+  repository: technicalguru/mailserver-roundcube
+  pullPolicy: IfNotPresent
+  nameOverride: ""
+  fullnameOverride: ""
+
+#####################
+# Service settings
+#####################
+# $service.port - Webserver port to bind the service to
+service:
+  port: 80
+
+# $resources - additional resource requirements
+resources: {}
+
+#####################
+# Database settings
+#####################
+# $dbHostname - the database host
+# $dbName     - the database instance name
+# $dbUser     - the database user to use
+# $dbPassword - the password of the database user to use
+dbHostname: "mariadb"
+dbName: "roundcube"
+dbUser: "roundcube"
+dbPassword: "roundcube"
+
+
+########################
+# Roundcube settings
+########################
+# $imapServerHostname - hostname to be used for HELO greeting
+# $smtpServerHostname - hostname to be used for HELO greeting
+# $defaultDomain      - The default domain for login users
+# $desKey             - a unique 24-char string for your server
+imapServerHostname: "postfix"
+smtpServerHostname: "postfix"
+defaultDomain: "localdomain"
+desKey: ""

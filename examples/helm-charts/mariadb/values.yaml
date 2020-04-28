@@ -1,0 +1,57 @@
+# Default values for mariadb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# $replicaCount - the number of replicas in the deployment to create
+replicaCount: 1
+
+# $image            - definition of docker image
+# $image.repository - the image name (without tag)
+# $image.pullPolicy - The pull policy for the image
+image:
+  repository: mariadb
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+# $service      - description of the service object
+# $service.type - the service type (ClusterIP, NodePort, LoadBalancer)
+# $service.port - the port number to expose by the service
+service:
+  type: ClusterIP
+  port: 3306
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# $rootPassword - the password for the root account when initially settig up the DB
+#                 ATTENTION! You shall change the password manually after the DB is set up
+rootPassword: "root-password"
+
+# Some config values for optimizing memory behaviour
+# $bufferPoolSize   - the buffer pool size for InnoDB
+# $maxAllowedPacket - The maximum size of a packet
+bufferPoolSize: "1024M"
+maxAllowedPacket: "64M"
+
+# $volumeType - How is the data volume being connected (hostPath, pvc)
+volumeType: "hostPath"
+
+# $environment - the context the pods are running in (dev, uat, prod)
+environment: "dev" 
+
+# $enableAuditLog - enables the mariadb audit plugin
+enableAuditLog: true
+# $auditFilePath  - where to store the audit file (default is the data directory in order to persist automatically)
+auditFilePath: "/var/lib/mysql/server_audit.log"
+

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "postfix.fullname" . }}-internal
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "postfix.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: smtp
+      port: {{ .Values.service.smtpPort }}
+      targetPort: smtp
+      protocol: TCP
+    - name: pop3
+      port: {{ .Values.service.pop3Port }}
+      targetPort: pop3
+      protocol: TCP
+    - name: imap
+      port: {{ .Values.service.imapPort }}
+      targetPort: imap
+      protocol: TCP
+    - name: submission
+      port: {{ .Values.service.submissionPort }}
+      targetPort: submission
+      protocol: TCP
+    - name: imaps
+      port: {{ .Values.service.imapsPort }}
+      targetPort: imaps
+      protocol: TCP
+    - name: pop3s
+      port: {{ .Values.service.pop3sPort }}
+      targetPort: pop3s
+      protocol: TCP
+    - name: amavis
+      port: {{ .Values.service.relayPort }}
+      targetPort: amavis
+      protocol: TCP
+  selector:
+    {{- include "postfix.selectorLabels" . | nindent 4 }}
