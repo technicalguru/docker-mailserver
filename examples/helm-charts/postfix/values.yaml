@@ -42,7 +42,9 @@ service:
 # $resources - additional resource requirements
 resources: {}
 
-# $environment - the node label the pod is running on (dev, uat, prod)
+# $affinityLabel - the key of the node label for affinity stickiness
+# $environment   - the node label the pod is running on (dev, uat, prod)
+affinityLabel: "mailserver/environment"
 environment: "dev"
 
 #####################

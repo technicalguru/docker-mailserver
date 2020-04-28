@@ -18,6 +18,11 @@ image:
 additionalLabels: {}
 #  labelKey: labelValue
 
+# $affinityLabel - the key of the node label for affinity stickiness
+# $environment   - the node label the pod is running on (dev, uat, prod)
+affinityLabel: "mailserver/environment"
+environment: "dev"
+
 # $service      - description of the service object
 # $service.type - the service type (ClusterIP, NodePort, LoadBalancer)
 # $service.port - the port number to expose by the service
@@ -49,9 +54,6 @@ maxAllowedPacket: "64M"
 
 # $volumeType - How is the data volume being connected (hostPath, pvc)
 volumeType: "hostPath"
-
-# $environment - the context the pods are running in (dev, uat, prod)
-environment: "dev" 
 
 # $enableAuditLog - enables the mariadb audit plugin
 enableAuditLog: true

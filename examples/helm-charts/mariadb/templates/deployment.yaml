@@ -25,7 +25,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: mailserver/environment
+              - key: {{ .Values.affinityLabel }}
                 operator: In
                 values:
                 - {{ .Values.environment }}

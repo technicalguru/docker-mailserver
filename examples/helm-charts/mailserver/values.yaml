@@ -5,11 +5,14 @@
 #####################################################
 # General settings valid for all pods
 #####################################################
+# $affinityLabel - the key of the node label for affinity stickiness
 # $environment     - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
 # $imagePullPolicy - The image pull policy used in the pods
+affinityLabel: &default_affinity_label "mailserver/environment"
 environment: &default_environment "production"
 imagePullPolicy: &default_pull_policy "IfNotPresent"
 
+# $mariadb.affinityLabel    - the key of the node label for affinity stickiness
 # $mariadb.environment      - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
 # $mariadb.image            - definition of docker image
 # $mariadb.image.repository - the image name (without tag)
@@ -25,11 +28,13 @@ imagePullPolicy: &default_pull_policy "IfNotPresent"
 # $mariadb.enableAuditLog   - enables the mariadb audit plugin
 # $mariadb.auditFilePath    - where to store the audit file (default is the data directory in order to persist automatically)
 mariadb:
+  affinityLabel: *default_affinity_label
   environment: *default_environment
   rootPassword: "my-db-root-password"
   image:
     pullPolicy: *default_pull_policy
 
+# $postfix.affinityLabel           - the key of the node label for affinity stickiness
 # $postfix.environment             - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
 # $postfix.image                   - definition of docker image
 # $postfix.image.repository        - the image name (without tag)
@@ -65,6 +70,7 @@ mariadb:
 # $postfix.tlsAdminEmail           - e-mail of admin to be informed when TLS certificate is about to expire
 # $postfix.configFiles             - definition of additional config files
 postfix:
+  affinityLabel: *default_affinity_label
   environment: *default_environment
   image:
     pullPolicy: *default_pull_policy
@@ -80,6 +86,7 @@ postfix:
   tlsCertificate: ""
   tlsKey: ""
 
+# $amavis.affinityLabel    - the key of the node label for affinity stickiness
 # $amavis.environment      - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
 # $amavis.image            - definition of docker image
 # $amavis.image.repository - the image name (without tag)
@@ -94,6 +101,7 @@ postfix:
 # $amavis.virusAdminEmail  - e-mail of admin to be informed when viruses were quarantined
 # $amavis.configFiles      - definition of additional config files
 amavis:
+  affinityLabel: *default_affinity_label
   environment: *default_environment
   image:
     pullPolicy: *default_pull_policy
