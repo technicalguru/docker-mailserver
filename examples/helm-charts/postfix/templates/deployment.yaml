@@ -17,6 +17,9 @@ spec:
         {{- if .Values.additionalLabels -}}
           {{- toYaml .Values.additionalLabels | nindent 8 }}
         {{- end }}
+    {{- if .Values.additionalTemplateSpec -}}
+      {{- toYaml .Values.additionalTemplateSpec | nindent 4 }}
+    {{- end }}
     spec:
       affinity:
         nodeAffinity:
@@ -27,6 +30,9 @@ spec:
                 operator: In
                 values:
                 - {{ .Values.environment }}
+      {{- if .Values.additionalPodSpec -}}
+        {{- toYaml .Values.additionalPodSpec | nindent 6 }}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -93,6 +99,9 @@ spec:
           mountPath: {{ .mountPath }}
           subPath: {{ base .path }}
 {{- end }}
+        {{- if .Values.additionalContainerSpec -}}
+          {{- toYaml .Values.additionalContainerSpec | nindent 8 }}
+        {{- end }}
       resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:

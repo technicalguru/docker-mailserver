@@ -59,3 +59,11 @@ configFiles: {}
 #- name: example2
 #  mountPath: /etc/spamassassin/x20-example.cf
 #  path: example2.cf
+
+# $additionalTemplateSpec  - Add more deployment template specification at this value
+# $additionalPodSpec       - Add more pod specification at this value
+# $additionalContainerSpec - Add more container specification at this value
+additionalTemplateSpec: {}
+additionalPodSpec: {}
+additionalContainerSpec: {}
+

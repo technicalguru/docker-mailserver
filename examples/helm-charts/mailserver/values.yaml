@@ -27,6 +27,9 @@ imagePullPolicy: &default_pull_policy "IfNotPresent"
 # $mariadb.volumeType       - How is the data volume being connected (hostPath, pvc)
 # $mariadb.enableAuditLog   - enables the mariadb audit plugin
 # $mariadb.auditFilePath    - where to store the audit file (default is the data directory in order to persist automatically)
+# $mariadb.additionalTemplateSpec  - Add more deployment template specification at this value
+# $mariadb.additionalPodSpec       - Add more pod specification at this value
+# $mariadb.additionalContainerSpec - Add more container specification at this value
 mariadb:
   affinityLabel: *default_affinity_label
   environment: *default_environment
@@ -69,6 +72,9 @@ mariadb:
 # $postfix.tlsCAPath               - directory where trusted CA certificates are stored
 # $postfix.tlsAdminEmail           - e-mail of admin to be informed when TLS certificate is about to expire
 # $postfix.configFiles             - definition of additional config files
+# $postfix.additionalTemplateSpec  - Add more deployment template specification at this value
+# $postfix.additionalPodSpec       - Add more pod specification at this value
+# $postfix.additionalContainerSpec - Add more container specification at this value
 postfix:
   affinityLabel: *default_affinity_label
   environment: *default_environment
@@ -100,6 +106,9 @@ postfix:
 # $amavis.relayPort        - relay port for Amavis mail scanning
 # $amavis.virusAdminEmail  - e-mail of admin to be informed when viruses were quarantined
 # $amavis.configFiles      - definition of additional config files
+# $amavis.additionalTemplateSpec  - Add more deployment template specification at this value
+# $amavis.additionalPodSpec       - Add more pod specification at this value
+# $amavis.additionalContainerSpec - Add more container specification at this value
 amavis:
   affinityLabel: *default_affinity_label
   environment: *default_environment
@@ -127,6 +136,9 @@ amavis:
 # $postfixadmin.hostmasterEmail    - e-mail of host responsible
 # $postfixadmin.postmasterEmail    - e-mail of mail responsible
 # $postfixadmin.webmasterEmail     - e-mail of web responsible
+# $postfixadmin.additionalTemplateSpec  - Add more deployment template specification at this value
+# $postfixadmin.additionalPodSpec       - Add more pod specification at this value
+# $postfixadmin.additionalContainerSpec - Add more container specification at this value
 postfixadmin:
   image:
     pullPolicy: *default_pull_policy
@@ -153,6 +165,9 @@ postfixadmin:
 # $roundcube.smtpServerHostname - hostname to be used for HELO greeting
 # $roundcube.defaultDomain      - The default domain for login users
 # $roundcube.desKey             - a unique 24-char string for your server (required, must not be empty)
+# $roundcube.additionalTemplateSpec  - Add more deployment template specification at this value
+# $roundcube.additionalPodSpec       - Add more pod specification at this value
+# $roundcube.additionalContainerSpec - Add more container specification at this value
 roundcube:
   image:
     pullPolicy: *default_pull_policy
