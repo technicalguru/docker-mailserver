@@ -1,0 +1,55 @@
+# Default values for a mailserver.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+environment: &default_environment "production"
+imagePullPolicy: &default_pull_policy "IfNotPresent"
+
+mariadb:
+  environment: *default_environment
+  rootPassword: "my-db-root-password"
+  image:
+    pullPolicy: *default_pull_policy
+
+postfix:
+  environment: *default_environment
+  image:
+    pullPolicy: *default_pull_policy
+  service:
+    externalIP: "your-external-ip"
+  dbPassword: "my-db-postfix-password"
+  dbSetupPassword: "my-db-root-password"
+  defaultDomain: "my-domain.tld"
+  serverName: "my-mailserver"
+  origin: "my-domain.tld"
+  tlsAdminEmail: "tls-admin@my-domain.tld"
+  tlsCertificateChainFile: "path-to-chain.pem"
+  tlsCertificateFile: "path-to-cert.pem"
+  tlsKeyFile: "path-to-privkey.pem"
+
+amavis:
+  environment: *default_environment
+  image:
+    pullPolicy: *default_pull_policy
+  defaultDomain: "my-domain.tld"
+  virusAdminEmail: "virus-admin@my-domain.tld"
+
+
+postfixadmin:
+  image:
+    pullPolicy: *default_pull_policy
+  dbPassword: "my-db-postfix-password"
+  dbSetupPassword: "my-db-root-password"
+  abuseEmail: "abuse@my-domain.tld"
+  hostmasterEmail: "hostmaster@my-domain.tld"
+  postmasterEmail: "postmaster@my-domain.tld"
+  webmasterEmail: "webmaster@my-domain.tld"
+
+
+roundcube:
+  image:
+    pullPolicy: *default_pull_policy
+  dbPassword: "my-db-roundcube-password"
+  defaultDomain: "my-domain.tld"
+  desKey: ""
+

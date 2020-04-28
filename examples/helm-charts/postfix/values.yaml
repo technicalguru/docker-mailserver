@@ -1,0 +1,83 @@
+# Default values for postfix.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# $replicaCount - the number of replicas in the deployment to create
+replicaCount: 1
+
+# $image            - definition of docker image
+# $image.repository - the image name (without tag)
+# $image.pullPolicy - The pull policy for the image
+image:
+  repository: technicalguru/mailserver-postfix
+  pullPolicy: IfNotPresent
+  nameOverride: ""
+  fullnameOverride: ""
+
+#####################
+# Service settings
+#####################
+# $service.externalIP -the bind address of your node where services shall listen
+# $service.smtpPort - SMTP Port
+# $service.pop3Port - POP3 Port
+# $service.imapPort - IMAP Port
+# $service.submissionPort - Submission Port
+# $service.imapsPort - IMAPS Port
+# $service.pop3sPort - POP3S Port
+# $service.relayPort - Relay port for incoming mail scan results (from amavis)
+service:
+  externalIP: "127.0.0.1"
+  smtpPort: 25
+  pop3Port: 110
+  imapPort: 143
+  submissionPort: 587
+  imapsPort: 993
+  pop3sPort: 995
+  relayPort: 10025
+
+# $resources - additional resource requirements
+resources: {}
+
+# $environment - the node label the pod is running on (dev, uat, prod)
+environment: "dev"
+
+#####################
+# Database settings
+#####################
+# $dbHostname - the database host
+# $dbName     - the database instance name
+# $dbUser     - the database user to use
+# $dbPassword - the password of the database user to use
+# $dbSetupPassword - the root password for setup
+dbHostname: "mariadb"
+dbName: "mail"
+dbUser: "postfix"
+dbPassword: "postfix"
+dbSetupPassword: "password"
+
+
+#####################
+# Mail settings
+#####################
+# $defaultDomain      - default mail domain
+# $serverName         - hostname to be used for HELO greeting
+# $origin             - default origin of mails, usually default mail domain
+# $amavisHostname     - name of host for Amavis mail scanning (optional)
+# $amavisPort         - relay port for Amavis mail scanning
+# $tlsCertificatePath - directory where TLS certificate files are stored
+# $tlsCAPath          - directory where trusted CA certificates are stored
+# $tlsAdminEmail      - e-mail of admin to be informed when TLS certificate is about to expire
+# $tlsCertificateChain- TLS certificate chain (base64 encoded)
+# $tlsCertificate:    - TLS certificate (base64 encoded)
+# $tlsKey             - TLS key (base64 encoded)
+defaultDomain: ""
+serverName: ""
+origin: ""
+amavisHostname: "amavis"
+amavisPort: ""
+tlsCertificatePath: "/var/certificate"
+tlsCAPath: ""
+tlsAdminEmail: ""
+tlsCertificateChainFile: "path-to-chain.pem"
+tlsCertificateFile: "path-to-cert.pem"
+tlsKeyFile: "path-to-privkey.pem"
