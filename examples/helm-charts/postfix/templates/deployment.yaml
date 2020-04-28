@@ -97,7 +97,7 @@ spec:
 {{- range .Values.configFiles }}
         - name: {{ .name }}
           mountPath: {{ .mountPath }}
-          subPath: {{ base .path }}
+          subPath: {{ base .mountPath }}
 {{- end }}
         {{- if .Values.additionalContainerSpec -}}
           {{- toYaml .Values.additionalContainerSpec | nindent 8 }}

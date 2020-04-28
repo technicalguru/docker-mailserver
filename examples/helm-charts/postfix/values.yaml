@@ -96,14 +96,16 @@ tlsKey: ""
 # $configfiles - list of config file definitions
 # $configfiles[].name - unique name for config definition
 # $configfiles[].mountPath - path of file in pod to mount at
-# $configfiles[].path - the config file (must be accessible within HELM chart)
-configFiles: {}
+# $configfiles[].content - the config file content
+# ATTENTION: You better pass the content with command line arguments to HELM:
+#       --set-file "configFiles[0].content=/path/to/file" (quotes required)
+configFiles: []
 #- name: example1
 #  mountPath: /etc/postfix/x10-example.cf
-#  path: example1.cf
+#  content: "content of file"
 #- name: example2
 #  mountPath: /etc/postfix/x20-example.cf
-#  path: example2.cf
+#  content: "content of file"
 
 # $additionalTemplateSpec  - Add more deployment template specification at this value
 # $additionalPodSpec       - Add more pod specification at this value

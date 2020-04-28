@@ -7,6 +7,6 @@ metadata:
   name: {{ include "postfix.fullname" $ }}-{{ .name }}
   namespace: {{ $.Release.Namespace }}
 data:
-  {{ base .path }}: |-
-    {{- tpl ($files.Get .path) $ | nindent 4 -}}
+  {{ base .mountPath }}: |-
+    {{- .content | nindent 4 -}}
 {{- end -}}

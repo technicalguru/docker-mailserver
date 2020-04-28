@@ -1,4 +1,3 @@
-{{- $files := .Files -}}
 {{ range .Values.configFiles }}
 ---
 apiVersion: v1
@@ -7,6 +6,6 @@ metadata:
   name: {{ include "amavis.fullname" $ }}-{{ .name }}
   namespace: {{ $.Release.Namespace }}
 data:
-  {{ base .path }}: |-
-    {{- tpl ($files.Get .path) $ | nindent 4 -}}
+  {{ base .mountPath }}: |-
+    {{- .content | nindent 4 -}}
 {{- end -}}
