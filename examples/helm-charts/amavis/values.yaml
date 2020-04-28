@@ -1,6 +1,8 @@
 # Default values for amavis.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
 
 # $replicaCount - the number of replicas in the deployment to create
 replicaCount: 1
@@ -11,8 +13,10 @@ replicaCount: 1
 image:
   repository: technicalguru/mailserver-amavis
   pullPolicy: IfNotPresent
-  nameOverride: ""
-  fullnameOverride: ""
+
+# $additionalLabels - additional labels to attach to a pod
+additionalLabels: {}
+#  labelKey: labelValue
 
 #####################
 # Service settings
@@ -36,5 +40,20 @@ environment: "dev"
 # $virusAdminEmail   - e-mail of admin to be informed when viruses were quarantined
 defaultDomain: ""
 relayHostname: "postfix-internal"
-relayPort: ""
+relayPort: "10025"
 virusAdminEmail: ""
+
+###########################
+# Additional customization 
+###########################
+# $configfiles - list of config file definitions
+# $configfiles[].name - unique name for config definition
+# $configfiles[].mountPath - path of file in pod to mount at
+# $configfiles[].path - the config file (must be accessible within HELM chart)
+configFiles: {}
+#- name: example1
+#  mountPath: /etc/spamassassin/x10-example.cf
+#  path: example1.cf
+#- name: example2
+#  mountPath: /etc/spamassassin/x20-example.cf
+#  path: example2.cf

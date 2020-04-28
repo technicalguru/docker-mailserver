@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         {{- include "postfixadmin.selectorLabels" . | nindent 8 }}
+        {{- if .Values.additionalLabels -}}
+          {{- toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
@@ -29,7 +32,7 @@ spec:
         - name: PFA_DB_PASS
           value: "{{ .Values.dbPassword }}"
         - name: PFA_SETUP_PASS
-          value: "{{ .Values.dbSetupPassword }}"
+          value: "{{ .Values.setupPassword }}"
         - name: PFA_POSTFIX_SERVER
           value: "{{ include "postfixadmin.mailserverHostname" . }}"
         - name: PFA_POSTFIX_PORT

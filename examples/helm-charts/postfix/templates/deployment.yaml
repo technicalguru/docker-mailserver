@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         {{- include "postfix.selectorLabels" . | nindent 8 }}
+        {{- if .Values.additionalLabels -}}
+          {{- toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
     spec:
       affinity:
         nodeAffinity:
@@ -49,7 +52,7 @@ spec:
           value: {{ include "postfix.amavisHostname" . }}
         - name: PF_AMAVIS_SERVICE_PORT
           value: "{{ .Values.amavisPort }}"
-{{- if .Files.Glob .Values.tlsCertificateFile }}
+{{- if .Values.tlsCertificate }}
         - name: PF_TLS_CERT_FILE
           value: "{{ .Values.tlsCertificatePath }}/tls.cert"
         - name: PF_TLS_KEY_FILE
@@ -81,9 +84,14 @@ spec:
           mountPath: /var/vmail
         - name: spool
           mountPath: /var/spool/postfix
-{{- if .Files.Glob .Values.tlsCertificateFile }}
+{{- if .Values.tlsCertificate }}
         - name: certificate
           mountPath: {{ .Values.tlsCertificatePath }}
+{{- end }}
+{{- range .Values.configFiles }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+          subPath: {{ base .path }}
 {{- end }}
       resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -94,9 +102,14 @@ spec:
       - name: spool
         hostPath:
           path: /var/docker/{{ .Release.Name }}/{{ .Values.environment }}/spool
-{{- if .Files.Glob .Values.tlsCertificateFile }}
+{{- if .Values.tlsCertificate }}
       - name: certificate
         secret:
           secretName: {{ template "postfix.fullname" . }}-certificate
+{{- end }}
+{{- range .Values.configFiles }}
+      - name: {{ .name }}
+        configMap:
+          name: {{ include "postfix.fullname" $ }}-{{ .name }}
 {{- end }}
 

@@ -1,6 +1,8 @@
 # Default values for mariadb.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
 
 # $replicaCount - the number of replicas in the deployment to create
 replicaCount: 1
@@ -12,8 +14,9 @@ image:
   repository: mariadb
   pullPolicy: IfNotPresent
 
-nameOverride: ""
-fullnameOverride: ""
+# $additionalLabels - additional labels to attach to a pod
+additionalLabels: {}
+#  labelKey: labelValue
 
 # $service      - description of the service object
 # $service.type - the service type (ClusterIP, NodePort, LoadBalancer)

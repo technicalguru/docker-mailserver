@@ -14,6 +14,7 @@ imagePullPolicy: &default_pull_policy "IfNotPresent"
 # $mariadb.image            - definition of docker image
 # $mariadb.image.repository - the image name (without tag)
 # $mariadb.image.pullPolicy - The pull policy for the image
+# $mariadb.additionalLabels - additional labels to attach to a pod
 # $mariadb.service          - description of the service object
 # $mariadb.service.type     - the service type (ClusterIP, NodePort, LoadBalancer)
 # $mariadb.service.port     - the port number to expose by the service
@@ -33,6 +34,7 @@ mariadb:
 # $postfix.image                   - definition of docker image
 # $postfix.image.repository        - the image name (without tag)
 # $postfix.image.pullPolicy        - The pull policy for the image
+# $postfix.additionalLabels        - additional labels to attach to a pod
 # $postfix.replicaCount            - the number of replicas in the deployment to create
 # $postfix.service.externalIP      - the bind address of your node where services shall listen
 # $postfix.service.smtpPort        - SMTP Port
@@ -54,11 +56,14 @@ mariadb:
 # $postfix.amavisHostname          - name of host for Amavis mail scanning (optional)
 # $postfix.amavisPort              - relay port for Amavis mail scanning
 # $postfix.tlsCertificatePath      - directory where TLS certificate files are stored in the pod
-# $postfix.tlsCertificateChainFile - The path to your TLS certificate chain file (chain.pem)
-# $postfix.tlsCertificateFile:     - The path to your TLS certificate (cert.pem)
-# $postfix.tlsKeyFile              - The path to your TLS key (privkey.pem)
+# ==> The following TLS certificate values shall not be set in your values file directly but given as arguments to the HELM command:
+# ==> e.g. --set-file postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsKey=/path/to/privkey.pem
+# $postfix.tlsCertificateChain     - TLS certificate chain (NOT base64 encoded)
+# $postfix.tlsCertificate:         - TLS certificate (NOT base64 encoded)
+# $postfix.tlsKey                  - TLS key (NOT base64 encoded)
 # $postfix.tlsCAPath               - directory where trusted CA certificates are stored
 # $postfix.tlsAdminEmail           - e-mail of admin to be informed when TLS certificate is about to expire
+# $postfix.configFiles             - definition of additional config files
 postfix:
   environment: *default_environment
   image:
@@ -71,14 +76,15 @@ postfix:
   serverName: "my-mailserver"
   origin: "my-domain.tld"
   tlsAdminEmail: "tls-admin@my-domain.tld"
-  tlsCertificateChainFile: "path-to-chain.pem"
-  tlsCertificateFile: "path-to-cert.pem"
-  tlsKeyFile: "path-to-privkey.pem"
+  tlsCertificateChain: ""
+  tlsCertificate: ""
+  tlsKey: ""
 
 # $amavis.environment      - the node label value for key "mailserver/environment" to stick the pod to a certain node in your cluster
 # $amavis.image            - definition of docker image
 # $amavis.image.repository - the image name (without tag)
 # $amavis.image.pullPolicy - The pull policy for the image
+# $amavis.additionalLabels - additional labels to attach to a pod
 # $amavis.replicaCount     - the number of replicas in the deployment to create
 # $amavis.service.port     - the incoming service port
 # $amavis.resources        - additional resource requirements
@@ -86,6 +92,7 @@ postfix:
 # $amavis.relayHostname    - name of host for Amavis mail scanning (optional)
 # $amavis.relayPort        - relay port for Amavis mail scanning
 # $amavis.virusAdminEmail  - e-mail of admin to be informed when viruses were quarantined
+# $amavis.configFiles      - definition of additional config files
 amavis:
   environment: *default_environment
   image:
@@ -97,6 +104,7 @@ amavis:
 # $postfixadmin.image              - definition of docker image
 # $postfixadmin.image.repository   - the image name (without tag)
 # $postfixadmin.image.pullPolicy   - The pull policy for the image
+# $postfixadmin.additionalLabels   - additional labels to attach to a pod
 # $postfixadmin.replicaCount       - the number of replicas in the deployment to create
 # $postfixadmin.service.port       - Webserver port to bind the service to
 # $postfixadmin.resources          - additional resource requirements
@@ -104,9 +112,9 @@ amavis:
 # $postfixadmin.dbName             - the database instance name
 # $postfixadmin.dbUser             - the database user to use
 # $postfixadmin.dbPassword         - the password of the database user to use
-# $postfixadmin.dbSetupPassword    - the root password for setup
 # $postfixadmin.mailserverHostname - hostname to be used for HELO greeting
 # $postfixadmin.mailserverPort     - relay port for Amavis mail scanning
+# $postfixadmin.setupPassword      - the setup password for PostfixAdmin
 # $postfixadmin.abuseEmail         - e-mail of abuse admin
 # $postfixadmin.hostmasterEmail    - e-mail of host responsible
 # $postfixadmin.postmasterEmail    - e-mail of mail responsible
@@ -115,7 +123,7 @@ postfixadmin:
   image:
     pullPolicy: *default_pull_policy
   dbPassword: "my-db-postfix-password"
-  dbSetupPassword: "my-db-root-password"
+  setupPassword: "my-pfa-setup-password"
   abuseEmail: "abuse@my-domain.tld"
   hostmasterEmail: "hostmaster@my-domain.tld"
   postmasterEmail: "postmaster@my-domain.tld"
@@ -125,6 +133,7 @@ postfixadmin:
 # $roundcube.image              - definition of docker image
 # $roundcube.image.repository   - the image name (without tag)
 # $roundcube.image.pullPolicy   - The pull policy for the image
+# $roundcube.additionalLabels   - additional labels to attach to a pod
 # $roundcube.replicaCount       - the number of replicas in the deployment to create
 # $roundcube.service.port       - Webserver port to bind the service to
 # $roundcube.resources          - additional resource requirements

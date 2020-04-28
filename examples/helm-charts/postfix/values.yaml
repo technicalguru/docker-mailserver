@@ -1,6 +1,8 @@
 # Default values for postfix.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
 
 # $replicaCount - the number of replicas in the deployment to create
 replicaCount: 1
@@ -11,8 +13,10 @@ replicaCount: 1
 image:
   repository: technicalguru/mailserver-postfix
   pullPolicy: IfNotPresent
-  nameOverride: ""
-  fullnameOverride: ""
+
+# $additionalLabels - additional labels to attach to a pod
+additionalLabels: {}
+#  labelKey: labelValue
 
 #####################
 # Service settings
@@ -59,25 +63,42 @@ dbSetupPassword: "password"
 #####################
 # Mail settings
 #####################
-# $defaultDomain      - default mail domain
-# $serverName         - hostname to be used for HELO greeting
-# $origin             - default origin of mails, usually default mail domain
-# $amavisHostname     - name of host for Amavis mail scanning (optional)
-# $amavisPort         - relay port for Amavis mail scanning
-# $tlsCertificatePath - directory where TLS certificate files are stored
-# $tlsCAPath          - directory where trusted CA certificates are stored
-# $tlsAdminEmail      - e-mail of admin to be informed when TLS certificate is about to expire
-# $tlsCertificateChain- TLS certificate chain (base64 encoded)
-# $tlsCertificate:    - TLS certificate (base64 encoded)
-# $tlsKey             - TLS key (base64 encoded)
+# $defaultDomain           - default mail domain
+# $serverName              - hostname to be used for HELO greeting
+# $origin                  - default origin of mails, usually default mail domain
+# $amavisHostname          - name of relay host for Amavis mail scanning (optional)
+# $amavisPort              - relay port for Amavis mail scanning
+# $tlsCertificatePath      - directory where TLS certificate files are stored
+# $tlsCAPath               - directory where trusted CA certificates are stored
+# $tlsAdminEmail           - e-mail of admin to be informed when TLS certificate is about to expire
+# ==> The TLS certificate values shall not be set in your values file directly but given as arguments to the HELM command:
+# ==> e.g. --set-file tlsCertificateChain=/path/to/fullchain.pem --set-file tlsCertificate=/path/to/cert.pem --set-file tlsKey=/path/to/privkey.pem
+# $tlsCertificateChain     - TLS certificate chain (NOT base64 encoded)
+# $tlsCertificate:         - TLS certificate (NOT base64 encoded)
+# $tlsKey                  - TLS key (NOT base64 encoded)
 defaultDomain: ""
 serverName: ""
 origin: ""
 amavisHostname: "amavis"
-amavisPort: ""
+amavisPort: "10024"
 tlsCertificatePath: "/var/certificate"
-tlsCAPath: ""
+tlsCAPath: "/etc/ssl/certs"
 tlsAdminEmail: ""
-tlsCertificateChainFile: "path-to-chain.pem"
-tlsCertificateFile: "path-to-cert.pem"
-tlsKeyFile: "path-to-privkey.pem"
+tlsCertificateChain: ""
+tlsCertificate: ""
+tlsKey: ""
+
+###########################
+# Additional customization 
+###########################
+# $configfiles - list of config file definitions
+# $configfiles[].name - unique name for config definition
+# $configfiles[].mountPath - path of file in pod to mount at
+# $configfiles[].path - the config file (must be accessible within HELM chart)
+configFiles: {}
+#- name: example1
+#  mountPath: /etc/postfix/x10-example.cf
+#  path: example1.cf
+#- name: example2
+#  mountPath: /etc/postfix/x20-example.cf
+#  path: example2.cf

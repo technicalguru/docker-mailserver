@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         {{- include "amavis.selectorLabels" . | nindent 8 }}
+        {{- if .Values.additionalLabels -}}
+          {{- toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
     spec:
       affinity:
         nodeAffinity:
@@ -43,10 +46,19 @@ spec:
         volumeMounts:
         - name: virusmails
           mountPath: /var/virusmails
+{{- range .Values.configFiles }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+          subPath: {{ base .path }}
+{{- end }}
       resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
       - name: virusmails
         hostPath:
           path: /var/docker/{{ .Release.Name }}/{{ .Values.environment }}/virusmails
-
+{{- range .Values.configFiles }}
+      - name: {{ .name }}
+        configMap:
+          name: {{ include "amavis.fullname" $ }}-{{ .name }}
+{{- end }}
