@@ -15,15 +15,6 @@ spec:
       labels:
         {{- include "roundcube.selectorLabels" . | nindent 8 }}
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: mailserver/environment
-                operator: In
-                values:
-                - {{ .Values.environment }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
