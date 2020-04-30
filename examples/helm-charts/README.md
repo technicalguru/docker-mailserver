@@ -49,7 +49,9 @@ Edit the values file now and set all individual variables for your deployment.
 * You can add values in the individual sections in case you want to change some of the values. Refer to
   the in-file documentation of these values.
 * Make sure that your TLS certificate for Postfix is available. The template will not create any TLS certificate
-  configuration if the file is not accessible.
+  configuration if the file is not accessible. Do not set the TLS certificate values in your values file (although you can)
+  but rather use the `--set-file=...` command line option to HELM in order to pass the content of these files into the
+  respective values.
 
 ## Update Dependencies
 
@@ -59,6 +61,8 @@ You will need to update the dependencies before you can start installation:
 helm dep update
 ```
 
+Alternatively, you can skip this step and use `--dependency-update` option in your HELM install command.
+
 ## Deploy into your Kubernetes cluster
 
 You can inspect the result of your deployment in advance by issuing the following command. `my-mailserver` 
@@ -66,14 +70,22 @@ is the installation name that HELM will use for referencing it. The closing dot 
 directory.
 
 ```
-helm template --namespace mailserver --values my-values.yaml my-mailserver .
+helm template \
+   --namespace mailserver \
+   --values my-values.yaml \
+   --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
+   my-mailserver .
 ```
 
-Check the output if the Kubernetes YAML files are what you had in mind when defining the values.
+Check the output whether the Kubernetes YAML files are what you had in mind when defining the values.
 Once you are satisfied with the result, finally install into you cluster:
 
 ```
-helm install --namespace mailserver --values my-values.yaml my-mailserver .
+helm install \
+   --namespace mailserver \
+   --values my-values.yaml \
+   --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
+   my-mailserver .
 ```
 
 ## Setup your Domain and  Mailboxes

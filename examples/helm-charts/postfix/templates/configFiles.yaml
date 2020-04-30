@@ -1,0 +1,12 @@
+{{- $files := .Files -}}
+{{ range .Values.configFiles }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "postfix.fullname" $ }}-{{ .name }}
+  namespace: {{ $.Release.Namespace }}
+data:
+  {{ base .mountPath }}: |-
+    {{- .content | nindent 4 -}}
+{{- end -}}

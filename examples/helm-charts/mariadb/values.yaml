@@ -1,6 +1,8 @@
 # Default values for mariadb.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
 
 # $replicaCount - the number of replicas in the deployment to create
 replicaCount: 1
@@ -12,8 +14,14 @@ image:
   repository: mariadb
   pullPolicy: IfNotPresent
 
-nameOverride: ""
-fullnameOverride: ""
+# $additionalLabels - additional labels to attach to a pod
+additionalLabels: {}
+#  labelKey: labelValue
+
+# $affinityLabel - the key of the node label for affinity stickiness
+# $environment   - the node label the pod is running on (dev, uat, prod)
+affinityLabel: "mailserver/environment"
+environment: "dev"
 
 # $service      - description of the service object
 # $service.type - the service type (ClusterIP, NodePort, LoadBalancer)
@@ -47,11 +55,17 @@ maxAllowedPacket: "64M"
 # $volumeType - How is the data volume being connected (hostPath, pvc)
 volumeType: "hostPath"
 
-# $environment - the context the pods are running in (dev, uat, prod)
-environment: "dev" 
-
 # $enableAuditLog - enables the mariadb audit plugin
 enableAuditLog: true
 # $auditFilePath  - where to store the audit file (default is the data directory in order to persist automatically)
 auditFilePath: "/var/lib/mysql/server_audit.log"
 
+################################################
+# More customization
+################################################
+# $additionalTemplateSpec  - Add more deployment template specification at this value
+# $additionalPodSpec       - Add more pod specification at this value
+# $additionalContainerSpec - Add more container specification at this value
+additionalTemplateSpec: {}
+additionalPodSpec: {}
+additionalContainerSpec: {}

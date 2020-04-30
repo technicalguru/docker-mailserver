@@ -14,16 +14,25 @@ spec:
     metadata:
       labels:
         {{- include "amavis.selectorLabels" . | nindent 8 }}
+        {{- if .Values.additionalLabels -}}
+          {{- toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
+    {{- if .Values.additionalTemplateSpec -}}
+      {{- toYaml .Values.additionalTemplateSpec | nindent 4 }}
+    {{- end }}
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: mailserver/environment
+              - key: {{ .Values.affinityLabel }}
                 operator: In
                 values:
                 - {{ .Values.environment }}
+      {{- if .Values.additionalPodSpec -}}
+        {{- toYaml .Values.additionalPodSpec | nindent 6 }}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -43,10 +52,22 @@ spec:
         volumeMounts:
         - name: virusmails
           mountPath: /var/virusmails
-      resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+{{- range .Values.configFiles }}
+        - name: {{ .name }}
+          mountPath: {{ .mountPath }}
+          subPath: {{ base .mountPath }}
+{{- end }}
+        {{- if .Values.additionalContainerSpec -}}
+          {{- toYaml .Values.additionalContainerSpec | nindent 8 }}
+        {{- end }}
+        resources:
+            {{- toYaml .Values.resources | nindent 10 }}
       volumes:
       - name: virusmails
         hostPath:
           path: /var/docker/{{ .Release.Name }}/{{ .Values.environment }}/virusmails
-
+{{- range .Values.configFiles }}
+      - name: {{ .name }}
+        configMap:
+          name: {{ include "amavis.fullname" $ }}-{{ .name }}
+{{- end }}

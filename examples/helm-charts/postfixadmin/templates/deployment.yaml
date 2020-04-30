@@ -14,7 +14,16 @@ spec:
     metadata:
       labels:
         {{- include "postfixadmin.selectorLabels" . | nindent 8 }}
+        {{- if .Values.additionalLabels -}}
+          {{- toYaml .Values.additionalLabels | nindent 8 }}
+        {{- end }}
+    {{- if .Values.additionalTemplateSpec -}}
+      {{- toYaml .Values.additionalTemplateSpec | nindent 4 }}
+    {{- end }}
     spec:
+      {{- if .Values.additionalPodSpec -}}
+        {{- toYaml .Values.additionalPodSpec | nindent 6 }}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -29,7 +38,7 @@ spec:
         - name: PFA_DB_PASS
           value: "{{ .Values.dbPassword }}"
         - name: PFA_SETUP_PASS
-          value: "{{ .Values.dbSetupPassword }}"
+          value: "{{ .Values.setupPassword }}"
         - name: PFA_POSTFIX_SERVER
           value: "{{ include "postfixadmin.mailserverHostname" . }}"
         - name: PFA_POSTFIX_PORT
@@ -45,6 +54,9 @@ spec:
         ports:
         - name: http
           containerPort: 80
-      resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.additionalContainerSpec -}}
+          {{- toYaml .Values.additionalContainerSpec | nindent 8 }}
+        {{- end }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
 

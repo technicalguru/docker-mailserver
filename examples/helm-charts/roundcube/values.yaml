@@ -1,6 +1,8 @@
 # Default values for roundcube.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nameOverride: ""
+fullnameOverride: ""
 
 # $replicaCount - the number of replicas in the deployment to create
 replicaCount: 1
@@ -11,8 +13,10 @@ replicaCount: 1
 image:
   repository: technicalguru/mailserver-roundcube
   pullPolicy: IfNotPresent
-  nameOverride: ""
-  fullnameOverride: ""
+
+# $additionalLabels - additional labels to attach to a pod
+additionalLabels: {}
+#  labelKey: labelValue
 
 #####################
 # Service settings
@@ -48,3 +52,13 @@ imapServerHostname: "postfix"
 smtpServerHostname: "postfix"
 defaultDomain: "localdomain"
 desKey: ""
+
+###################################
+# More customization
+###################################
+# $additionalTemplateSpec  - Add more deployment template specification at this value
+# $additionalPodSpec       - Add more pod specification at this value
+# $additionalContainerSpec - Add more container specification at this value
+additionalTemplateSpec: {}
+additionalPodSpec: {}
+additionalContainerSpec: {}

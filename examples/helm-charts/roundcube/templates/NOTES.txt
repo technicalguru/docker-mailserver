@@ -1,1 +1,7 @@
-Roundcube installed
+Roundcube v{{ .Chart.AppVersion }} installed: 
+   Namespace     {{ .Release.Namespace }}
+   HELM instance {{ include "roundcube.fullname" . }}
+   Image         {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+   Chart         {{ .Chart.Name }} v{{ .Chart.Version }}
+   Service       {{ include "roundcube.fullname" . }}
+   Deployment    {{ include "roundcube.fullname" . }}

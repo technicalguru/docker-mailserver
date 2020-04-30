@@ -1,0 +1,4 @@
+Mailserver v{{ .Chart.AppVersion }} installed: 
+   Namespace     {{ .Release.Namespace }}
+   HELM instance {{ .Release.Name }}
+   Chart         {{ .Chart.Name }} v{{ .Chart.Version }}
