@@ -60,7 +60,7 @@ spec:
           value: "{{ .Values.amavisPort }}"
 {{- if .Values.tlsCertificate }}
         - name: PF_TLS_CERT_FILE
-          value: "{{ .Values.tlsCertificatePath }}/tls.cert"
+          value: "{{ .Values.tlsCertificatePath }}/tls.crt"
         - name: PF_TLS_KEY_FILE
           value: "{{ .Values.tlsCertificatePath }}/tls.key"
         - name: PF_TLS_CAFILE
@@ -102,8 +102,8 @@ spec:
         {{- if .Values.additionalContainerSpec -}}
           {{- toYaml .Values.additionalContainerSpec | nindent 8 }}
         {{- end }}
-      resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
       volumes:
       - name: mailboxes
         hostPath:

@@ -1,1 +1,8 @@
-MariaDB installed
+MariaDB v{{ .Chart.AppVersion }} installed: 
+   Namespace     {{ .Release.Namespace }}
+   HELM instance {{ include "mariadb.fullname" . }}
+   Image         {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+   Chart         {{ .Chart.Name }} v{{ .Chart.Version }}
+   ConfigMap     {{ include "mariadb.fullname" . }}-configuration
+   Service       {{ include "mariadb.fullname" . }}
+   Deployment    {{ include "mariadb.fullname" . }}

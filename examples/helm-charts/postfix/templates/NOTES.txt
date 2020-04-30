@@ -1,1 +1,13 @@
-Postfix/Dovecot installed
+Postfix v{{ .Chart.AppVersion }} installed: 
+   Namespace     {{ .Release.Namespace }}
+   HELM instance {{ include "postfix.fullname" . }}
+   Image         {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+   Chart         {{ .Chart.Name }} v{{ .Chart.Version }}
+   ConfigMap     {{ include "postfix.fullname" . }}-configuration
+{{- range .Values.configFiles }}
+   ConfigMap     {{ include "postfix.fullname" $ }}-{{ .name }}
+{{- end -}}
+   Service       {{ include "postfix.fullname" . }}-internal
+   Service       {{ include "postfix.fullname" . }}
+   Secret        {{ include "postfix.fullname" . }}-certificate
+   Deployment    {{ include "postfix.fullname" . }}
