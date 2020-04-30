@@ -2,13 +2,6 @@
 
 This page explains how to use the HELM charts for the composition of all containers.
 
-* Chart `mariadb`: Deploys MariaDB pod
-* Chart `postfix`: Deploys Postfix pod
-* Chart `amavis`:  Deploys Amavis pod
-* Chart `postfixadmin`: Deploys PostfixAdmin pod
-* Chart `roundcube`: Deploys Roundcube pod
-* Chart `mailserver`: Deploys all of above
-
 # HOWTO
 
 ## Prerequisites
@@ -38,13 +31,13 @@ helm repo add technicalguru https://raw.githubusercontent.com/technicalguru/helm
 helm repo update
 ```
 
-## Copy the original values file
+## Copy the original values.yaml file
 
 Make sure you are working in your home directory (or whatever path you want to work in). Then download
-the values file e.g. via wget:
+the [`values.yaml`](https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml) file e.g. via wget:
 
 ```
-wget -O my-values.yaml [https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml](https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml)
+wget -O my-values.yaml https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml
 ```
 
 ## Define you deployment values
