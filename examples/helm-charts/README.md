@@ -1,13 +1,6 @@
 # Deployment using HELM charts
 
-These examples provide you HELM charts for individual use or the composition.
-
-* Chart `mariadb`: Deploys MariaDB pod
-* Chart `postfix`: Deploys Postfix pod
-* Chart `amavis`:  Deploys Amavis pod
-* Chart `postfixadmin`: Deploys PostfixAdmin pod
-* Chart `roundcube`: Deploys Roundcube pod
-* Chart `mailserver`: Deploys all of above
+This page explains how to use the HELM charts for the composition of all containers.
 
 # HOWTO
 
@@ -29,39 +22,36 @@ YAML files and commands accordingly.
 * You are familiar with MariaDB or MySQL administration. There are a few commands to be executed directly
   on your database. A [PhpMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin/) pod could help you here.
 
-## Clone the Git Repository
+## Configure the HELM repository
 
-Make sure you are working in your home directory (or whatever path you want to work in)
+Execute the following command to add the HELM repository to your client and load its content:
 
 ```
-git clone https://github.com/technicalguru/docker-mailserver.git
-cd docker-mailserver/examples/helm-charts/mailserver
+helm repo add technicalguru https://raw.githubusercontent.com/technicalguru/helm-repo/master/repo
+helm repo update
+```
+
+## Copy the original values.yaml file
+
+Make sure you are working in your home directory (or whatever path you want to work in). Then download
+the [`values.yaml`](https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml) file e.g. via wget:
+
+```
+wget -O my-values.yaml https://raw.githubusercontent.com/technicalguru/helm-repo/master/src/mailserver/values.yaml
 ```
 
 ## Define you deployment values
 
-You can edit the `values.yaml` file directly or make a copy. We will assume that you have made a copy called
-`my-values.yaml`.
+You can now edit the `my-values.yaml` file directly and set all individual variables for your deployment.
 
-Edit the values file now and set all individual variables for your deployment.
-
-* You can comment out or delete variable that you do not change. HELM will use the default values from `values.yaml`.
+* You can comment out or delete variable that you do not change. HELM will use the default values from `values.yaml`
+  or the underlying sub-charts.
 * You can add values in the individual sections in case you want to change some of the values. Refer to
   the in-file documentation of these values.
 * Make sure that your TLS certificate for Postfix is available. The template will not create any TLS certificate
   configuration if the file is not accessible. Do not set the TLS certificate values in your values file (although you can)
   but rather use the `--set-file=...` command line option to HELM in order to pass the content of these files into the
   respective values.
-
-## Update Dependencies
-
-You will need to update the dependencies before you can start installation:
-
-```
-helm dep update
-```
-
-Alternatively, you can skip this step and use `--dependency-update` option in your HELM install command.
 
 ## Deploy into your Kubernetes cluster
 
@@ -74,7 +64,7 @@ helm template \
    --namespace mailserver \
    --values my-values.yaml \
    --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
-   my-mailserver .
+   my-mailserver technicalguru/mailserver:1.0.0-rc1 --devel
 ```
 
 Check the output whether the Kubernetes YAML files are what you had in mind when defining the values.
@@ -85,7 +75,7 @@ helm install \
    --namespace mailserver \
    --values my-values.yaml \
    --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
-   my-mailserver .
+   my-mailserver technicalguru/mailserver:1.0.0-rc1 --devel
 ```
 
 ## Setup your Domain and  Mailboxes
@@ -111,4 +101,16 @@ You need to execute some further first-time installation steps. Follow the instr
 
 The setup of the mailserver is complete now. Feel free to give feedback or report bugs and change requests
 at the individual components' issue trackers or at this main [Issue Tracker](https://github.com/technicalguru/docker-mailserver/issues).
+
+# Customizing the HELM charts
+
+Of course you can change the HELM charts. You will find the sources at GitHub:
+
+> [https://github.com/technicalguru/helm-repo](https://github.com/technicalguru/helm-repo)
+
+You can easily clone it into your home directory and work from there:
+
+```
+git clone https://github.com/technicalguru/helm-repo.git
+```
 

@@ -1,7 +1,0 @@
-PostfixAdmin v{{ .Chart.AppVersion }} installed: 
-   Namespace     {{ .Release.Namespace }}
-   HELM instance {{ include "postfixadmin.fullname" . }}
-   Image         {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
-   Chart         {{ .Chart.Name }} v{{ .Chart.Version }}
-   Service       {{ include "postfixadmin.fullname" . }}
-   Deployment    {{ include "postfixadmin.fullname" . }}
