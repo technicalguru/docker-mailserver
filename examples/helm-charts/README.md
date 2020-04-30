@@ -64,7 +64,7 @@ helm template \
    --namespace mailserver \
    --values my-values.yaml \
    --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
-   my-mailserver technicalguru/mailserver:1.0.0-rc1
+   my-mailserver technicalguru/mailserver:1.0.0-rc1 --devel
 ```
 
 Check the output whether the Kubernetes YAML files are what you had in mind when defining the values.
@@ -75,7 +75,7 @@ helm install \
    --namespace mailserver \
    --values my-values.yaml \
    --set-file=postfix.tlsCertificate=/path/to/cert.pem,postfix.tlsCertificateChain=/path/to/fullchain.pem,postfix.tlsKey=/path/to/privke.pem \
-   my-mailserver technicalguru/mailserver:1.0.0-rc1
+   my-mailserver technicalguru/mailserver:1.0.0-rc1 --devel
 ```
 
 ## Setup your Domain and  Mailboxes
