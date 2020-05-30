@@ -9,6 +9,10 @@ These examples provide you HELM charts for individual use or the composition.
 * Chart `roundcube`: Deploys Roundcube pod
 * Chart `mailserver`: Deploys all of above
 
+*Please notice!* These are examples only. A more valuable source of these charts (and maintained with current versions)
+is my [HELM Repository](https://github.com/technicalguru/helm-repo). That's why these charts will be removed sooner
+or later from here.
+
 # HOWTO
 
 ## Prerequisites
