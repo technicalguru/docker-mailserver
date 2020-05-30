@@ -2,6 +2,10 @@
 
 This page explains how to use the HELM charts for the composition of all containers.
 
+*Please notice!* These are examples only. A more valuable source of these charts (and maintained with current versions)
+is my [HELM Repository](https://github.com/technicalguru/helm-repo). That's why these charts will be removed sooner
+or later from here.
+
 # HOWTO
 
 ## Prerequisites
