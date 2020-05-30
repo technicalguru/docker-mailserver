@@ -28,6 +28,10 @@ spec:
           value: "10025"
         - name: AV_VIRUSADMIN_EMAIL
           value: "<my-postmaster-email-address>"
+        - name: AV_NOTIFY_SENDER
+          value: "<my-postmaster-sender-address>"
+        - name: AV_NOTIFY_ADMIN
+          value: "<my-postmaster-sender-address>"
         ports:
         - containerPort: 10024
           name: amavis
