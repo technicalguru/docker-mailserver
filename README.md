@@ -36,10 +36,10 @@ _docker-mailserver_  is licensed under [GNU LGPL 3.0](LICENSE.md).
 A complete mailserver is the coordinated setup of multiple components. Various docker images come into play to fulfill this goal. You shall set them up in the following order:
 
 1. [MySQL >8.0](https://hub.docker.com/\_/mysql) or [MariaDB >10.4](https://hub.docker.com/\_/mariadb) as the database backend
-1. [Postfix/Dovecot instance](https://hub.docker.com/technicalguru/mailserver-postfix)
-1. [Amavis/ClamAV/SpamAssassin instance](https://hub.docker.com/technicalguru/mailserver-amavis)
-1. [PostfixAdmin instance](https://hub.docker.com/technicalguru/mailserver-postfixadmin)
-1. [Roundcube](https://hub.docker.com/technicalguru/mailserver-roundcube)
+1. [Postfix/Dovecot instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfix)
+1. [Amavis/ClamAV/SpamAssassin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-amavis)
+1. [PostfixAdmin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfixadmin)
+1. [Roundcube](https://hub.docker.com/repository/docker/technicalguru/mailserver-roundcube)
 1. Securing the web interfaces with a Reverse Proxy or Ingress Controller. (see section "Security Considerations" below)
 
 The following sections will help you to setup your own mailserver using different infrastructures.
@@ -55,9 +55,9 @@ Please refer to the special [HELM](examples/helm-charts) section.
 
 # Security Considerations
 
-* It is crucial that you do not expose port 10025 of the [mailserver-postfix](https://hub.docker.com/technicalguru/mailserver-postfix)
+* It is crucial that you do not expose port 10025 of the [mailserver-postfix](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfix)
   container. It can be misused as a SPAM relay as it does not restrict senders that deliver mail to it. This port is intended for
-  internal purposes only. The same is valid for the port 10024 of the [mailserver-amavis](https://hub.docker.com/technicalguru/mailserver-amavis)
+  internal purposes only. The same is valid for the port 10024 of the [mailserver-amavis](https://hub.docker.com/repository/docker/technicalguru/mailserver-amavis)
   container.
 * Postfix's main ports can be protected by TLS. Please make use of this as it increases security of your setup. In fact,
   the Postfix setup was never tested thoroughly without TLS so it is possible it will not work properly - especially when
