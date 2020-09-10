@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: opendkim
+  namespace: mailserver
+spec:
+  selector:
+    app: mailserver
+    tier: opendkim
+  ports:
+  - port: 41001
+    name: opendkim
+    targetPort: opendkim

@@ -20,6 +20,7 @@ configuration scripts.
 # Sub-projects
 
 * [docker-mailserver-postfix](https://github.com/technicalguru/docker-mailserver-postfix) - Postfix/Dovecot image (mailserver component)
+* [docker-mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) - OpenDKIM image (DKIM signing milter component)
 * [docker-mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) - Image for PostfixAdmin (Web UI to manage mailboxes and domain in Postfix)
 * [docker-mailserver-amavis](https://github.com/technicalguru/docker-mailserver-amavis) - Amavis, ClamAV and SpamAssassin (provides spam and virus detection)
 * [docker-mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) - Roundcube Webmailer
@@ -37,6 +38,7 @@ A complete mailserver is the coordinated setup of multiple components. Various d
 
 1. [MySQL >8.0](https://hub.docker.com/\_/mysql) or [MariaDB >10.4](https://hub.docker.com/\_/mariadb) as the database backend
 1. [Postfix/Dovecot instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfix)
+1. [OpenDKIM instance](https://github.com/technicalguru/docker-mailserver-opendkim) (optional)
 1. [Amavis/ClamAV/SpamAssassin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-amavis)
 1. [PostfixAdmin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfixadmin)
 1. [Roundcube](https://hub.docker.com/repository/docker/technicalguru/mailserver-roundcube)
@@ -62,7 +64,7 @@ Please refer to the special [HELM](examples/helm-charts) section.
 * Postfix's main ports can be protected by TLS. Please make use of this as it increases security of your setup. In fact,
   the Postfix setup was never tested thoroughly without TLS so it is possible it will not work properly - especially when
   passwords are required.
-* PostfixAdmin and Roundcube are Web User Interfaces that are exposed as HTTP only. An attacker could easily copy your network
+* PostfixAdmin, OpenDKIM and Roundcube provide Web User Interfaces that are exposed as HTTP only. An attacker could easily copy your network
   traffic and read your passwords. Make sure you have an appropriate Ingress Controller or Reverse Proxy in front and your traffic
   is routed internally on your host only. 
 * If your internal network traffix in a Kubernetes cluster is crossing node borders, you will need to ensure that it is encrypted.

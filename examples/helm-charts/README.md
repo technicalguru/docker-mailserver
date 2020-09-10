@@ -83,6 +83,11 @@ helm install \
 Now, everything is complete to actually create your domains and mailboxes. Follow the instructions as given in
 [mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) documentation.
 
+## Setup DKIM Signing
+
+The OpenDKIM container does not create any keys (yet). Please follow the key setup instruction of the 
+[mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) documentation.
+
 ## Setup Roundcube WebMailer
 
 Roundcube will require a correct database setup. It can create all the schema tables itself but the database
