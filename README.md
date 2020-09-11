@@ -20,6 +20,7 @@ configuration scripts.
 # Sub-projects
 
 * [docker-mailserver-postfix](https://github.com/technicalguru/docker-mailserver-postfix) - Postfix/Dovecot image (mailserver component)
+* [docker-mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) - OpenDKIM image (DKIM signing milter component)
 * [docker-mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) - Image for PostfixAdmin (Web UI to manage mailboxes and domain in Postfix)
 * [docker-mailserver-amavis](https://github.com/technicalguru/docker-mailserver-amavis) - Amavis, ClamAV and SpamAssassin (provides spam and virus detection)
 * [docker-mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) - Roundcube Webmailer
@@ -27,7 +28,8 @@ configuration scripts.
 # Versions
 The following versions are available as releases. Sub-projects have their own lifecycle.
 
-* [1.0.0, 1.0, 1, latest](https://github.com/technicalguru/docker-mailserver/tree/v1.0.0)
+* [1.1.1, 1.1, 1, latest](https://github.com/technicalguru/docker-mailserver/tree/v1.1.1)
+* [1.0.0, 1.0](https://github.com/technicalguru/docker-mailserver/tree/v1.0.0)
 
 # License
 _docker-mailserver_  is licensed under [GNU LGPL 3.0](LICENSE.md).
@@ -36,10 +38,11 @@ _docker-mailserver_  is licensed under [GNU LGPL 3.0](LICENSE.md).
 A complete mailserver is the coordinated setup of multiple components. Various docker images come into play to fulfill this goal. You shall set them up in the following order:
 
 1. [MySQL >8.0](https://hub.docker.com/\_/mysql) or [MariaDB >10.4](https://hub.docker.com/\_/mariadb) as the database backend
-1. [Postfix/Dovecot instance](https://hub.docker.com/technicalguru/mailserver-postfix)
-1. [Amavis/ClamAV/SpamAssassin instance](https://hub.docker.com/technicalguru/mailserver-amavis)
-1. [PostfixAdmin instance](https://hub.docker.com/technicalguru/mailserver-postfixadmin)
-1. [Roundcube](https://hub.docker.com/technicalguru/mailserver-roundcube)
+1. [Postfix/Dovecot instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfix)
+1. [OpenDKIM instance](https://github.com/technicalguru/docker-mailserver-opendkim) (optional)
+1. [Amavis/ClamAV/SpamAssassin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-amavis)
+1. [PostfixAdmin instance](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfixadmin)
+1. [Roundcube](https://hub.docker.com/repository/docker/technicalguru/mailserver-roundcube)
 1. Securing the web interfaces with a Reverse Proxy or Ingress Controller. (see section "Security Considerations" below)
 
 The following sections will help you to setup your own mailserver using different infrastructures.
@@ -55,14 +58,14 @@ Please refer to the special [HELM](examples/helm-charts) section.
 
 # Security Considerations
 
-* It is crucial that you do not expose port 10025 of the [mailserver-postfix](https://hub.docker.com/technicalguru/mailserver-postfix)
+* It is crucial that you do not expose port 10025 of the [mailserver-postfix](https://hub.docker.com/repository/docker/technicalguru/mailserver-postfix)
   container. It can be misused as a SPAM relay as it does not restrict senders that deliver mail to it. This port is intended for
-  internal purposes only. The same is valid for the port 10024 of the [mailserver-amavis](https://hub.docker.com/technicalguru/mailserver-amavis)
+  internal purposes only. The same is valid for the port 10024 of the [mailserver-amavis](https://hub.docker.com/repository/docker/technicalguru/mailserver-amavis)
   container.
 * Postfix's main ports can be protected by TLS. Please make use of this as it increases security of your setup. In fact,
   the Postfix setup was never tested thoroughly without TLS so it is possible it will not work properly - especially when
   passwords are required.
-* PostfixAdmin and Roundcube are Web User Interfaces that are exposed as HTTP only. An attacker could easily copy your network
+* PostfixAdmin, OpenDKIM and Roundcube provide Web User Interfaces that are exposed as HTTP only. An attacker could easily copy your network
   traffic and read your passwords. Make sure you have an appropriate Ingress Controller or Reverse Proxy in front and your traffic
   is routed internally on your host only. 
 * If your internal network traffix in a Kubernetes cluster is crossing node borders, you will need to ensure that it is encrypted.

@@ -2,10 +2,6 @@
 
 This page explains how to use the HELM charts for the composition of all containers.
 
-*Please notice!* These are examples only. A more valuable source of these charts (and maintained with current versions)
-is my [HELM Repository](https://github.com/technicalguru/helm-repo). That's why these charts will be removed sooner
-or later from here.
-
 # HOWTO
 
 ## Prerequisites
@@ -86,6 +82,11 @@ helm install \
 
 Now, everything is complete to actually create your domains and mailboxes. Follow the instructions as given in
 [mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) documentation.
+
+## Setup DKIM Signing
+
+The OpenDKIM container does not create any keys (yet). Please follow the key setup instruction of the 
+[mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) documentation.
 
 ## Setup Roundcube WebMailer
 

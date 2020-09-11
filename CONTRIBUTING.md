@@ -37,6 +37,7 @@ Mailserver is intentionally modular. Its main mail-related functions are separat
 
 * [docker-mailserver](https://github.com/technicalguru/docker-mailserver) - Provides help, guidance and examples how to orchestrate the Docker images
 * [docker-mailserver-postfix](https://github.com/technicalguru/docker-mailserver-postfix) - Implements the core mailing functionality to send and receive messages.
+* [docker-mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) - OpenDKIM image (DKIM signing milter component)
 * [docker-mailserver-postfixadmin](https://github.com/technicalguru/docker-mailserver-postfixadmin) - Provides administration function for domains and mailboxes
 * [docker-mailserver-amavis](https://github.com/technicalguru/docker-mailserver-amavis) - Provides mail scanners to detect viruses and spam
 * [docker-mailserver-roundcube](https://github.com/technicalguru/docker-mailserver-roundcube) - A webmail interface that lets you pick-up, read, manage and send e-mails

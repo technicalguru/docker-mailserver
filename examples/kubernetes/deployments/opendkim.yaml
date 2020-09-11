@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opendkim
+  namespace: mailserver
+spec:
+  selector:
+    matchLabels:
+      app: mailserver
+      tier: opendkim
+  template:
+    metadata:
+      labels:
+        app: mailserver
+        tier: opendkim
+        logType: opendkim
+    spec:
+      containers:
+      - name: opendkim
+        image: technicalguru/mailserver-opendkim
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DKIM_DOMAIN
+          value: "<my-first-domain>"
+        - name: DKIM_PORT
+          value: "41001"
+        - name: DKIM_DB_HOST
+          value: "mariadb"
+        - name: DKIM_DB_NAME
+          value: "opendkim"
+        - name: DKIM_DB_USER
+          value: "opendkim"
+        - name: DKIM_DB_PASS
+          value: "<my-mariadb-opendkim-password>"
+        - name: DKIM_SETUP_PASS
+          value: "<my-mariadb-root-password>"
+        ports:
+        - containerPort: 41001
+          name: opendkim
+    

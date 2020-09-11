@@ -117,6 +117,27 @@ kubectl get pods -n mailserver
 
 Also check that the new pod has no issues. Use `kubectl logs <pod-name>` or your logging infrastructure.
 
+## Setup OpenDKIM
+
+Check the `services/opendkim.yaml` file. If the service definition fits
+then create the service:
+
+```
+kubectl apply -f services/opendkim.yaml
+```
+
+Second, adust the `deployments/opendkim.yaml` file. It requires you to change the
+database and domain data. A complete description can be found
+in the [mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) documentation.
+If the deployment definition is ok for you then apply it:
+
+```
+kubectl apply -f deployments/opendkim.yaml
+```
+
+You need to execute some further steps in order to setup signing keys. Follow the instructions as given in
+[mailserver-opendkim](https://github.com/technicalguru/docker-mailserver-opendkim) documentation.
+
 ## Setup Amavis Virus and Spam Checker
 
 Check the `services/amavis.yaml` file. If the service definition fits
@@ -221,6 +242,8 @@ Here are some useful links that help you to test whether your new Mailserver wor
 * [**Relay Test**](http://www.aupads.org/test-relay.html) - checks whether your mailserver can be misused as an open mail gateway (relay)
 * [**TLS Test**](https://www.checktls.com/) - checks whether your TLS configuration is complete and works as intended
 * [**SMTP Test**](https://mxtoolbox.com/diagnostic.aspx) - A general mailserver diagnostic tool
+* [**DMARC DKIM Record Checker**](https://www.dmarcanalyzer.com/how-to-validate-a-domainkey-dkim-record/) - checks correctness of your DKIM DNS TXT entry
+* [**DKIM Check**](https://www.appmaildev.com/en/dkim) - verifies your DKIM signing feature by giving you a temporary recipient address where you send a test mail
 
 # Congratulations!
 
