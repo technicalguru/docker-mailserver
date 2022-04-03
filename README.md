@@ -28,7 +28,8 @@ configuration scripts.
 # Versions
 The following versions are available as releases. Sub-projects have their own lifecycle.
 
-* [1.2.0, 1.2, 1, latest](https://github.com/technicalguru/docker-mailserver/tree/v1.2.0)
+* [1.3.0, 1.3, 1, latest](https://github.com/technicalguru/docker-mailserver/tree/v1.3.0)
+* [1.2.0, 1.2](https://github.com/technicalguru/docker-mailserver/tree/v1.2.0)
 * [1.1.1, 1.1](https://github.com/technicalguru/docker-mailserver/tree/v1.1.1)
 * [1.0.0, 1.0](https://github.com/technicalguru/docker-mailserver/tree/v1.0.0)
 
