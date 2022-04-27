@@ -50,6 +50,12 @@ spec:
           value: "amavis.mailserver.svc.cluster.local"
         - name: PF_AMAVIS_SERVICE_PORT
           value: "10024"
+          # un-comment and setup these env vars when you want to enable DKIM service
+          # value is complete DNS name: "<service-name>.<namespace-name>.svc.cluster.local"
+#        - name: PF_DKIM_SERVICE_NAME
+#          value: "opendkim.mailserver.svc.cluster.local"
+#        - name: PF_DKIM_SERVICE_PORT
+#          value: "41001"
         - name: PF_TLS_CERT_FILE
           value: "/var/certificate/tls.crt"
         - name: PF_TLS_KEY_FILE
