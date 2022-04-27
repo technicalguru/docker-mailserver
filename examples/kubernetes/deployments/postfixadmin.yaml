@@ -29,7 +29,7 @@ spec:
         - name: PFA_DB_PASS
           value: "<my-mariadb-postfix-password>"
         - name: PFA_SETUP_PASS
-          value: "<my-mariadb-root-password>"
+          value: "<my-postfixadmin-setup-password>"
         - name: PFA_POSTFIX_SERVER
           value: "postfix"
         - name: PFA_POSTFIX_PORT
