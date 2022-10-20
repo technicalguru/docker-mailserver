@@ -1,0 +1,124 @@
+version: "3"
+
+services:
+  # -----------------------------------------------------
+  # Roundcube Container
+  # -----------------------------------------------------
+  mailserver-roundcube:
+    image: technicalguru/mailserver-roundcube
+    container_name: mailserver-roundcube
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - RC_DB_HOST=mariadb
+      - RC_DB_NAME=roundcube
+      - RC_DB_USER=roundcube
+      - RC_DB_PASS=MyRoundcubePa$$word
+      - RC_DES_KEY=33fd4e5d116f362d81596809afdc6e17be914614 # 24-random-key (e.g https://securekit.org/random-key-generator )
+      - RC_IMAP_SERVER_NAME=mailserver-postfix
+      - RC_SMTP_SERVER_NAME=mailserver-postfix
+      - RC_DEFAULT_DOMAIN=example.com
+
+  # -----------------------------------------------------
+  # PostfixAdmin Container
+  # -----------------------------------------------------
+  mailserver-postfixadmin:
+    image: technicalguru/mailserver-postfixadmin
+    container_name: mailserver-postfixadmin
+    restart: unless-stopped
+    ports:
+      - "81:80"
+    environment:
+      - PFA_DB_HOST=mariadb
+      - PFA_DB_NAME=postfix
+      - PFA_DB_USER=postfix
+      - PFA_DB_PASS=MyPostfixPa$$word
+      - PFA_SETUP_PASS=MyR00tPa$$word
+      - PFA_POSTFIX_SERVER=mailserver-postfix
+      - PFA_POSTFIX_PORT=25
+      - PFA_ABUSE_EMAIL=abuse@example.com
+      - PFA_HOSTMASTER_EMAIL=hostmaster@example.com
+      - PFA_POSTMASTER_EMAIL=postmaster@example.com
+      - PFA_WEBMASTER_EMAIL=webmaster@example.com
+
+  # -----------------------------------------------------
+  # Opendkim Container
+  # -----------------------------------------------------
+  mailserver-opendkim:
+    image: technicalguru/mailserver-opendkim
+    container_name: mailserver-opendkim
+    restart: unless-stopped
+    ports:
+      - "41001:41001" # OpenDKIM
+    environment:
+      - DKIM_DOMAIN=example.com
+      - DKIM_PORT=41001
+      - DKIM_DB_HOST=mariadb
+      - DKIM_DB_NAME=opendkim
+      - DKIM_DB_USER=opendkim
+      - DKIM_DB_PASS=MyOpendkimPa$$word
+      - DKIM_SETUP_PASS= MyR00tPa$$word
+  
+  # -----------------------------------------------------
+  # ClamDAV, Amavis Container
+  # -----------------------------------------------------
+  mailserver-amavis:
+    image: technicalguru/mailserver-amavis
+    container_name: mailserver-amavis
+    restart: unless-stopped
+    ports:
+      - "10024:10024"   # Amavis
+    environment:
+      - AV_MYDOMAIN=example.com
+      - AV_POSTFIX_SERVICE_NAME=mailserver-postfix
+      - AV_POSTFIX_SERVICE_PORT=10025
+      - AV_VIRUSADMIN_EMAIL=postmaster@${AV_MYDOMAIN}
+      - AV_NOTIFY_SENDER=${AV_VIRUSADMIN_EMAIL}
+      - AV_NOTIFY_ADMIN=${AV_VIRUSADMIN_EMAIL}
+    volumes:
+      - /path/to/virusmails:/var/virusmails
+
+
+  # -----------------------------------------------------
+  # Postfix & Dovecot Container 
+  # -----------------------------------------------------
+  mailserver-postfix:
+    image: technicalguru/mailserver-postfix
+    container_name: mailserver-postfix
+    restart: unless-stopped
+    ports:
+      - "25:25"         # STMP
+      - "110:110"       # POP3
+      - "143:143"       # IMAP
+      - "587:587"       # Submission
+      - "993:993"       # IMAPs
+      - "995:995"       # POP3s
+      - "10025:10025"   # Checked
+    environment:
+      # Database (postfix)
+      - PF_DB_HOST=mariadb
+      - PF_DB_NAME=postfix
+      - PF_DB_USER=postfix
+      - PF_DB_PASS=MyPostfixPa$$word
+      - PF_SETUP_PASS=MyR00tPa$$word
+      # Domain
+      - PF_MYDOMAIN=mail.example.com
+      - PF_MYHOSTNAME=mail.example.com
+      - PF_MYORIGIN=${PF_MYDOMAIN}
+      # Amavis Service
+      - PF_AMAVIS_SERVICE_NAME=amavis.local
+      - PF_AMAVIS_SERVICE_PORT=10024
+      # DKIM
+      - PF_DKIM_SERVICE_NAME=opendkim.local
+      - PF_DKIM_SERVICE_PORT=41001
+      # SSL
+      - PF_TLS_CERT_FILE=/var/certificate/tls.crt
+      - PF_TLS_KEY_FILE=/var/certificate/tls.key
+      - PF_TLS_CAFILE=/var/certificate/tls.chain
+      - PF_TLS_CAPATH=/etc/ssl/certs
+      - PF_TLS_ADMIN_EMAIL=postmaster@example.com
+    volumes:
+      - /path/to/mailboxes:/var/vmail
+      - /path/to/spool:/var/spool/postfix
+      - /path/to/certificate:/var/certificate
