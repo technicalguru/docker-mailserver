@@ -26,5 +26,7 @@ spec:
   - port: 995
     name: pop3s
     targetPort: pop3s
+  externalTrafficPolicy: Local
+  internalTrafficPolicy: Cluster
   externalIPs:
   - "<your-node-ip4-address>"
