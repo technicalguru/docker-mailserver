@@ -1,3 +1,4 @@
+```
 version: '3.9'
 
 services:
@@ -72,3 +73,4 @@ volumes:
   db_data:
   postfix_data:
   opendkim_data:
+```
