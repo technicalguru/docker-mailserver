@@ -3,42 +3,55 @@ version: '3.9'
 services:
   database:
     image: mariadb:10.5
-    container_name: mailserver_database
+    container_name: mailserver-database
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: example_root_password
-      MYSQL_DATABASE: postfix
-      MYSQL_USER: postfix
-      MYSQL_PASSWORD: example_password
     volumes:
       - db_data:/var/lib/mysql
+      - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   postfix:
     image: technicalguru/mailserver-postfix
-    container_name: mailserver_postfix
+    container_name: mailserver-postfix
     restart: unless-stopped
     environment:
-      DB_HOST: database
-      DB_USER: postfix
-      DB_PASS: example_password
+      PF_DB_HOST: mailserver-database
+      PF_DB_NAME: postfix
+      PF_DB_USER: postfix
+      PF_DB_PASS: example_postfix_password
+      PF_MYDOMAIN: example.com
+      PF_MYHOSTNAME: mx.example.com
+      PF_DKIM_SERVICE_NAME: postfix-opendkim
+      PF_DKIM_SERVICE_PORT: "41001"
     ports:
       - "25:25"
+      - "143:143"
       - "465:465"
       - "587:587"
+      - "993:993"
     volumes:
       - postfix_data:/var/mail
-      - ./config/postfix:/etc/postfix:ro
+    # if needed
+    # - /etc/letsencrypt/live/example.com/fullchain.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem:ro
+    # - /etc/letsencrypt/live/example.com/privkey.pem:/etc/ssl/private/ssl-cert-snakeoil.key:ro
 
   opendkim:
     image: technicalguru/mailserver-opendkim
-    container_name: mailserver_opendkim
+    container_name: mailserver-opendkim
     restart: unless-stopped
+    environment:
+      DKIM_DB_HOST: mailserver-database
+      DKIM_DB_NAME: opendkim
+      DKIM_DB_USER: opendkim
+      DKIM_DB_PASS: example_opendkim_password
+      DKIM_DOMAIN: example.com
     volumes:
       - opendkim_data:/etc/opendkim
 
   amavis:
-    image: technicalguru/mailserver-amavis
-    container_name: mailserver_amavis
+    image: technicalguru/docker-mailserver-amavis
+    container_name: mailserver-amavis
     restart: unless-stopped
     ports:
       - "10024:10024"
@@ -47,24 +60,35 @@ services:
 
   postfixadmin:
     image: technicalguru/mailserver-postfixadmin
-    container_name: mailserver_postfixadmin
+    container_name: mailserver-postfixadmin
     restart: unless-stopped
     environment:
-      DB_HOST: database
-      DB_USER: postfix
-      DB_PASS: example_password
-      DB_NAME: postfix
+      PFA_SETUP_PASS: example_root_password
+      PFA_DB_USER: postfix
+      PFA_DB_HOST: mailserver-database
+      PFA_DB_PASS: example_postfix_password
+      PFA_DB_NAME: postfix
+      PFA_POSTFIX_SERVER: example.com
+      PFA_ABUSE_EMAIL: admin@example.com
+      PFA_HOSTMASTER_EMAIL: admin@example.com
+      PFA_POSTMASTER_EMAIL: admin@example.com
+      PFA_WEBMASTER_EMAIL: admin@example.com
     ports:
       - "8080:80"
 
   roundcube:
     image: technicalguru/mailserver-roundcube
-    container_name: mailserver_roundcube
+    container_name: mailserver-roundcube
     restart: unless-stopped
     environment:
-      DB_HOST: database
-      DB_USER: postfix
-      DB_PASS: example_password
+      RC_DB_USER: roundcube
+      RC_DB_HOST: mailserver-database
+      RC_DB_PASS: example_roundcube_password
+      RC_DB_NAME: roundcube
+      RC_DES_KEY: thiskeyisusedtoencrypt24
+      RC_IMAP_SERVER_NAME: mx.example.com
+      RC_SMTP_SERVER_NAME: mx.example.com
+      RC_DEFAULT_DOMAIN: example.com
     ports:
       - "80:80"
 
