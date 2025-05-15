@@ -14,7 +14,7 @@ services:
       - db_data:/var/lib/mysql
 
   postfix:
-    image: technicalguru/docker-mailserver-postfix
+    image: technicalguru/mailserver-postfix
     container_name: mailserver_postfix
     restart: unless-stopped
     environment:
@@ -30,14 +30,14 @@ services:
       - ./config/postfix:/etc/postfix:ro
 
   opendkim:
-    image: technicalguru/docker-mailserver-opendkim
+    image: technicalguru/mailserver-opendkim
     container_name: mailserver_opendkim
     restart: unless-stopped
     volumes:
       - opendkim_data:/etc/opendkim
 
   amavis:
-    image: technicalguru/docker-mailserver-amavis
+    image: technicalguru/mailserver-amavis
     container_name: mailserver_amavis
     restart: unless-stopped
     ports:
@@ -46,7 +46,7 @@ services:
       - AMAVIS_LOGLEVEL=1
 
   postfixadmin:
-    image: technicalguru/docker-mailserver-postfixadmin
+    image: technicalguru/mailserver-postfixadmin
     container_name: mailserver_postfixadmin
     restart: unless-stopped
     environment:
@@ -58,7 +58,7 @@ services:
       - "8080:80"
 
   roundcube:
-    image: technicalguru/docker-mailserver-roundcube
+    image: technicalguru/mailserver-roundcube
     container_name: mailserver_roundcube
     restart: unless-stopped
     environment:
