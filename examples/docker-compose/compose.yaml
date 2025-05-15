@@ -50,7 +50,7 @@ services:
       - opendkim_data:/etc/opendkim
 
   amavis:
-    image: technicalguru/docker-mailserver-amavis
+    image: technicalguru/mailserver-amavis
     container_name: mailserver-amavis
     restart: unless-stopped
     ports:
